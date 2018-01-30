@@ -1,22 +1,6 @@
 
-# coding: utf-8
-
-# In[1]:
-
 import pandas as pd
 import numpy as np
-
-
-# In[2]:
-
-def process_data(name):
-    df = pd.read_csv(name)
-    df['Processed'] = df['Contents'].apply(rem_punt)
-    df.drop(['Contents'],axis = 1 , inplace = True)
-    df['Offer_noise_free'] = df['Offer'].apply(rem_noise)
-    df.to_csv('Processed_Data.csv',index=False,encoding = "utf-8")
-                                               
-
 
 # In[3]:
 
@@ -47,6 +31,16 @@ def rem_noise(doc):
             return i
     return doc
 
+
+def process_data(name):
+
+    
+    df = pd.read_csv(name)
+    df['Processed'] = df['Contents'].apply(rem_punt)
+    df.drop(['Contents'],axis = 1 , inplace = True)
+    df['Offer_noise_free'] = df['Offer'].apply(rem_noise)
+    df.to_csv('Processed_Data.csv',index=False,encoding = "utf-8")
+                                               
 
 # In[10]:
 
