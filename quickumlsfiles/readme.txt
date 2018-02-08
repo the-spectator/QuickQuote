@@ -10,3 +10,15 @@ QuickQuotes
 │   │   ├── cui-semtypes.db
 │   │   └── umls-simstring.db   
 
+Update: 8 Feb 2018
+
+1. Download en_core_web_sm-2.0.0.tar.gz
+2. run command: pip install {path}/en_core_web_sm-2.0.0.tar.gz
+3. This on python interpreter
+	import spacy
+	import en_core_web_sm
+	nlp = en_core_web_sm.load()
+	doc = nlp(u'If this works we are good to go.')
+	print(doc)
+
+If this workout we are good to go.
