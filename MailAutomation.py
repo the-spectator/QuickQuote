@@ -1,6 +1,6 @@
 from imapclient import IMAPClient
 from secrets import EMAIL, PASSWORD
-from config import imap_server, imap_port
+from config import imap_server, imap_port, eraw_data_csv
 import email
 import lxml.html
 import csv, os.path
@@ -90,7 +90,7 @@ def mail_reader(folder,flags):
 		data_dict.append(row)
 
 	# Writing data to csv
-	write_to_csv('raw_data.csv', data_dict)
+	write_to_csv(eraw_data_csv, data_dict)
 
 	# to set messages unseen to mark it seen use [b'\\Seen']
 	server.set_flags(messages,[])

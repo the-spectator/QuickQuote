@@ -5,8 +5,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import re
+import config
 
-df = pd.read_csv("Data/regexProcessed.csv", encoding='UTF-8')
+df = pd.read_csv(config.regex_processed_csv, encoding='UTF-8')
 df = df.iloc[1:]
 df = df.drop(columns=['Year_of_birth'])
 
@@ -43,4 +44,4 @@ def changeWt(ans):
 
 df['Weight'] = df['Weight'].apply(changeWt)
 
-df.to_csv('Data/PProcessed.csv',index=False, encoding = "utf-8")
+df.to_csv(config.preprocessed_csv,index=False, encoding = "utf-8")

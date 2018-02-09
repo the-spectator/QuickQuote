@@ -6,9 +6,10 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import config
 
 
-df = pd.read_csv("Data/PProcessed.csv", encoding='UTF-8')
+df = pd.read_csv(config.preprocessed_csv, encoding='UTF-8')
 df['ColumnA'] = df[df.columns[0:11]].apply(lambda x: ','.join(x.dropna()),axis=1)
 #print(df['ColumnA'][1])
 
@@ -62,9 +63,9 @@ def lemmatize(token, tag):
 
 df['Lemmitize'] = df['ColumnA'].apply(rem_punt).apply(tokenize)
 
-df.to_csv('Data/NLPProcessed.csv',index=False, encoding = "utf-8")
+df.to_csv(config.nlp_processed_csv,index=False, encoding = "utf-8")
 
-df = pd.read_csv('Data/NLPProcessed.csv')
+df = pd.read_csv(config.nlp_processed_csv)
 
 
 # Statistical Modeling 
@@ -78,7 +79,7 @@ from sklearn.metrics import accuracy_score,classification_report
 
 
 X = df['Lemmitize']
-of = pd.read_csv('Data/raw_data1.csv', encoding='ISO-8859-1')
+of = pd.read_csv(config.raw_data_csv, encoding='ISO-8859-1')
 y = of['Offer']
 
 X[0]

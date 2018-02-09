@@ -5,6 +5,7 @@ from collections import defaultdict
 import codecs
 import re
 from datetime import datetime
+import config
 #from search_term import give_med_terms
 
 
@@ -388,13 +389,13 @@ def main():
 	i=0
 	print('Opening Raw Data File')
 
-	out = open('Data/regexProcessed.csv', 'w', newline='')
+	out = open(config.regex_processed_csv, 'w', newline='')
 	wtr= csv.writer( out )
 	wtr.writerow(['Gender','Year_of_birth','Age(years)','Product Type','Face Amount','Weight','Height','Habit','Medication','Family','Property',''])
 
 
 
-	with open('Data/raw_data1.csv','r',encoding="ISO-8859-1") as f:
+	with open(config.raw_data_csv, 'r', encoding="ISO-8859-1") as f:
 	    rows = csv.reader(f)
 	    for row in rows:
 
@@ -409,4 +410,4 @@ print('Regex Processing starting ... ')
 
 main()
 
-print('Regex Processing Completed )
+print('Regex Processing Completed ')
