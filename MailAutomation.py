@@ -60,7 +60,7 @@ def write_to_csv(filename, data_dict):
 	    writer.writerows(data_dict)
 		
 
-def mail_reader(folder,flags):
+def mail_reader(folder, flags, new_flags):
 	server = IMAPClient(imap_server, imap_port, use_uid = True, ssl = True)
 	server.login(EMAIL, PASSWORD)
 
@@ -93,15 +93,16 @@ def mail_reader(folder,flags):
 	write_to_csv(eraw_data_csv, data_dict)
 
 	# to set messages unseen to mark it seen use [b'\\Seen']
-	server.set_flags(messages,[])
+	server.set_flags(messages,new_flags)
 	
 	# messages = server.search(['ALL'])
 	# print(server.get_flags(messages))
 	server.logout()
 
 # For getting all unread emails from inbox
-mail_reader('INBOX',['SEEN'])
+#mail_reader('INBOX',['SEEN'],[b'\\SEEN'])
 
+mail_reader('INBOX',['UNSEEN'],[])
 # For getting all emails from sentbox
 # mail_automation('SENT',['ALL'])
 
