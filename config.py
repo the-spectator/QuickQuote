@@ -16,3 +16,7 @@ raw_data_csv = 'Data/raw_data1.csv'
 regex_processed_csv = 'Data/regexProcessed.csv'
 eraw_data_csv = 'Data/eraw_data.csv'
 enlp_processed_csv = 'Data/NLPProcessed.csv'
+template = 'Data/email.template'
+
+# email
+email_from = 'Trial waliid <trial_wali_id@outlook.com>'

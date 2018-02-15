@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from imapclient import IMAPClient
 from secrets import EMAIL, PASSWORD
 from email.message import EmailMessage
@@ -6,42 +8,49 @@ import email.utils
 import pandas as pd
 import config
 
-def split_combined_addresses(addresses):
+def give_email_address(addresses):
     parts = email.utils.getaddresses(addresses)
-    print(parts)
-    return [email.utils.formataddr(name_addr) for name_addr in parts]
+    username, domain = parts[0][1].split('@')
+    display_name= parts[0][0]
+    address = Address(display_name = display_name, username = username, domain = domain)
+    return address
 
-def read_file():
-	df = pd.read_csv(config.eraw_data_csv, encoding='UTF-8')
-	parts = email.utils.getaddresses([df['recpient mail'][2]])
-	print(parts)
-	print([email.utils.formataddr(name_addr) for name_addr in parts])
-	#print(split_combined_addresses(df['recpient mail'][2]))
+def append_mail(doc, server, folder, new_flags):
+	email_to = give_email_address([doc['Sender/email']])
+	email_from = give_email_address([config.email_from])
+	email_subject = 'Re:' + doc['subject']
+	result = doc['result']
+	email_template = read_template()
+	email_content = email_template.format(product = result)
+	mail = create_email(email_to, email_subject, email_from, email_content)
+	server.append(folder, mail, flags=(new_flags), msg_time = None)
 	pass
 
 # Create the base text message.
-def create_email():
+def create_email(email_to, email_subject, email_from, email_content):
 	msg = EmailMessage()
-	msg['Subject'] = "Ayons asperges pour le déjeuner"
-	msg['From'] = Address("Pepé Le Pew", "pepe", "example.com")
-	msg['To'] = (Address("Penelope Pussycat", "penelope", "example.com"),)
-	msg.set_content("""\
-	Salut!
-
-	Cela ressemble à un excellent recipie[1] déjeuner.
-
-	[1] http://www.yummly.com/recipe/Roasted-Asparagus-Epicurious-203718
-
-	--Pepé
-	""")
+	msg['Subject'] = email_subject
+	msg['From'] = email_from
+	msg['To'] = email_to
+	msg.set_content(email_content)
 	return bytes(msg)
 
+# Reading Template from email.template
+def read_template():
+	with open(config.template, 'r', encoding = 'utf8') as file:
+		email_template = file.read()
+	return email_template
+
+def login():
+	server = IMAPClient(config.imap_server, config.imap_port, use_uid = True, ssl = True)
+	server.login(EMAIL, PASSWORD)
+	return server
 
 def main():
-	folder = 'Test'
-	server = IMAPClient(config.imap_server, config.imap_port, use_uid = True, ssl = True)
-	server.login(config.EMAIL, config.PASSWORD)
+	server = login()
+	df = pd.read_csv(config.nlp_processed_csv, encoding='utf8')
+	df.apply(append_mail, args =(server,'Test',[]), axis = 1)
+	server.logout()
 
-	server.append(folder, create_email(), flags=([]), msg_time = None)
+main()
 
-read_file()

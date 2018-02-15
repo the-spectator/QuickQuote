@@ -7,7 +7,9 @@ from email import message_from_string
 from email.message import EmailMessage
 from email.headerregistry import Address
 import lxml.html
-import csv, os.path
+import csv, os
+import pandas as pd
+import collections
 
 def clean(data):
 	#employing the lxml parser to clean the content of mail
@@ -55,13 +57,13 @@ def get_decoded_email_body(message_body):
 
 def write_to_csv(filename, data_dict):
 	file_exists = os.path.isfile(filename)
-	# Writing it into csv file
-	with open(filename, 'a', encoding = 'utf8') as csvfile:
-	    fieldnames = ['id', 'message_id', 'subject', 'Sender/email', 'recpient mail', 'sendOn', 'receivedOn', 'Offer', 'Contents']
-	    writer = csv.DictWriter(csvfile, fieldnames=fieldnames) 
-	    if not file_exists:
-	    	writer.writeheader()
-	    writer.writerows(data_dict)
+	ordered_dict = [collections.OrderedDict(x) for x in data_dict]
+	df = pd.DataFrame(ordered_dict)
+	if not file_exists or os.stat(filename).st_size == 0:
+		df.to_csv(filename, header = True, index = False, encoding = 'utf8')
+	else:
+		df.to_csv(filename, mode = 'a', index = False,header = False, encoding = 'utf8')
+
 		
 
 def mail_reader(folder, flags, new_flags):
@@ -90,7 +92,7 @@ def mail_reader(folder, flags, new_flags):
 		subject = envelope.subject.decode('utf8')
 		from_ = str(envelope.from_[0])
 		to = str(envelope.to[0])
-		row = {'id': msgid, 'message_id': message_id, 'subject': subject, 'Sender/email': from_, 'recpient mail': to, 'sendOn': date, 'receivedOn': date, 'Offer': None, 'Contents': content}
+		row = {'Id': msgid, 'MessageId': message_id, 'Subject': subject, 'Sender/email': from_, 'recpient mail': to, 'sendOn': date, 'receivedOn': date, 'Offer': None, 'Contents': content}
 		data_dict.append(row)
 
 	# Writing data to csv
@@ -103,28 +105,10 @@ def mail_reader(folder, flags, new_flags):
 	# print(server.get_flags(messages))
 	server.logout()
 
-def create_message():
-	
-	# Create the base text message.
-	msg = EmailMessage()
-	msg['Subject'] = "Ayons asperges pour le déjeuner"
-	msg['From'] = Address("Pepé Le Pew", "pepe", "example.com")
-	msg['To'] = Address("Penelope Pussycat", "penelope", "example.com")
-	msg.set_content("""\
-	Salut!
-
-	Cela ressemble à un excellent recipie[1] déjeuner.
-
-	[1] http://www.yummly.com/recipe/Roasted-Asparagus-Epicurious-203718
-
-	--Pepé
-	""")
-	return bytes(msg)
-
 # For getting all unread emails from inbox
-#mail_reader('INBOX',['SEEN'],[b'\\SEEN'])
+# mail_reader('INBOX',['SEEN'],[b'\\SEEN'])
 
 mail_reader('INBOX',['UNSEEN'],[])
-# For getting all emails from sentbox
-# mail_automation('SENT',['ALL'])
 
+# For getting all emails from sentbox
+# mail_reader('SENT',['ALL'])
