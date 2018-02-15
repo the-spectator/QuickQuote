@@ -1,7 +1,9 @@
 from imapclient import IMAPClient
 from secrets import EMAIL, PASSWORD
 from config import imap_server, imap_port, eraw_data_csv
-import email
+from email import message_from_string
+from email.message import EmailMessage
+from email.headerregistry import Address
 import lxml.html
 import csv, os.path
 
@@ -21,7 +23,7 @@ def get_decoded_email_body(message_body):
     :param message_body: Raw 7-bit message body input e.g. from imaplib. Double encoded in quoted-printable and latin-1
     :return: Message body as unicode string
     """
-    msg = email.message_from_string(message_body)
+    msg = message_from_string(message_body)
 
     text = ""
     if msg.is_multipart():
@@ -98,6 +100,24 @@ def mail_reader(folder, flags, new_flags):
 	# messages = server.search(['ALL'])
 	# print(server.get_flags(messages))
 	server.logout()
+
+def create_message():
+	
+	# Create the base text message.
+	msg = EmailMessage()
+	msg['Subject'] = "Ayons asperges pour le déjeuner"
+	msg['From'] = Address("Pepé Le Pew", "pepe", "example.com")
+	msg['To'] = Address("Penelope Pussycat", "penelope", "example.com")
+	msg.set_content("""\
+	Salut!
+
+	Cela ressemble à un excellent recipie[1] déjeuner.
+
+	[1] http://www.yummly.com/recipe/Roasted-Asparagus-Epicurious-203718
+
+	--Pepé
+	""")
+	return bytes(msg)
 
 # For getting all unread emails from inbox
 #mail_reader('INBOX',['SEEN'],[b'\\SEEN'])
