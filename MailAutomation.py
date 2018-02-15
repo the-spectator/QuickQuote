@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from imapclient import IMAPClient
 from secrets import EMAIL, PASSWORD
 from config import imap_server, imap_port, eraw_data_csv

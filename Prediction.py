@@ -50,18 +50,21 @@ def PredictionModule(doc):
 	loaded_model = pickle.load(open('SavedModels/SVM.sav', 'rb'))
 	
 	pd = loaded_model.predict([doc])
-	print(pd)
+	return (pd)
 
 
 def main():
 
-	df = pd.read_csv(config.eraw_data_csv, encoding='ISO-8859-1')
-	df['ColumnA'] = df[df.columns[0:10]].apply(lambda x: ','.join(x.dropna()),axis=1)
+	df = pd.read_csv(config.eraw_data_csv, encoding='utf-8')
 
-	df['Lemmitize'] = df['ColumnA'].apply(rem_punt).apply(tokenize)
+	df['ColumnA'] = df[df.columns[0:9]].apply(lambda x: ','.join(x.dropna().astype(str)),axis=1)
+
+	df['Lemmitize'] = df['Contents'].apply(rem_punt).apply(tokenize)
+
 	df.to_csv(config.enlp_processed_csv,index=False, encoding = "utf-8")
 	df = pd.read_csv(config.enlp_processed_csv)		#change when merged with email raw data
-	df['Lemmitize'].apply(PredictionModule)
+	df['result'] = df['Lemmitize'].apply(PredictionModule)
+	df.to_csv(config.enlp_processed_csv,index=False, encoding = "utf-8")
 
 main()
 	

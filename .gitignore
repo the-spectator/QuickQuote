@@ -1,4 +1,6 @@
 *.py~
 *.pyc
+config.pyc
 /__pycache__
 .gitignore~
+*.csv~
