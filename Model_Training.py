@@ -82,24 +82,22 @@ X = df['Lemmitize']
 of = pd.read_csv(config.raw_data_csv, encoding='ISO-8859-1')
 y = of['Offer']
 
-X[0]
 
 X_train,X_test,y_train,y_test = train_test_split(X,y)
 
-vect = TfidfVectorizer(max_df=0.5, max_features=1000, min_df=1, use_idf=True , ngram_range=(1,2) , lowercase = True)
+vect = TfidfVectorizer(max_df=0.5, max_features=10000, min_df=1, use_idf=True , ngram_range=(1,2) , lowercase = True)
 
 #from xgboost.sklearn import XGBClassifier
 #model1 = XGBClassifier(nthread=4,n_estimators=1000)
 
 matrix = vect.fit_transform(X.values)
-print(matrix)
+#print(matrix)
 '''
 for i, feature in enumerate(vect.get_feature_names()):
     print(i, feature)
-'''
 
 va = raw_input()
-
+'''
 # Naive Bayes
 
 from sklearn.naive_bayes import GaussianNB,MultinomialNB
@@ -174,6 +172,8 @@ model_making("Logistic Regression",vect, model5, X_train, y_train, X_test, y_tes
 
 model_making("SGDClassifier",vect, model7, X_train, y_train, X_test, y_test)
 
+#model_making("NB",vect, model2, X_train, y_train, X_test, y_test)
+
 print("Total dataset",len(X))
 print("Training dataset: ",len(X_train))
 print("Testing dataset: ",len(X_test),"\n")
@@ -183,6 +183,8 @@ for i in range(len(name)):
     print("{:20} {:^20.3f} {:^20.3f} {:20.3f}s \n ".format(name[i] , results[i] , training_time[i] , prediction_time[i] ) )
 
 
+
+'''
 print(X_test)
 
 
@@ -190,7 +192,6 @@ loaded_model = pickle.load(open('SavedModels/SVM.sav', 'rb'))
 result = loaded_model.score(X_test, y_test)
 print(result)
 
-'''
 
 parameters = {'kernel':('linear', 'rbf'), 'C':[1, 10]}
 
