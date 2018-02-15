@@ -86,11 +86,19 @@ X[0]
 
 X_train,X_test,y_train,y_test = train_test_split(X,y)
 
-vect = TfidfVectorizer(max_df=0.8, max_features=15000, min_df=0.01, use_idf=True , ngram_range=(1,3))
+vect = TfidfVectorizer(max_df=0.5, max_features=1000, min_df=1, use_idf=True , ngram_range=(1,2) , lowercase = True)
 
 #from xgboost.sklearn import XGBClassifier
 #model1 = XGBClassifier(nthread=4,n_estimators=1000)
 
+matrix = vect.fit_transform(X.values)
+print(matrix)
+'''
+for i, feature in enumerate(vect.get_feature_names()):
+    print(i, feature)
+'''
+
+va = raw_input()
 
 # Naive Bayes
 
