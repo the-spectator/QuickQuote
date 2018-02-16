@@ -6,5 +6,6 @@ def model_maker_main():
 	regex_processing_main()
 	preprocess_main()
 	model_making_main()
+	print("Completed ...")
 
 model_maker_main()

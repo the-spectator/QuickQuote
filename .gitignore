@@ -4,3 +4,4 @@ config.pyc
 /__pycache__
 .gitignore~
 *.csv~
+*.sav
