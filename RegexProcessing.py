@@ -373,17 +373,14 @@ def reg(st,i,data,wtr):
 
 
 
-
-
-
 def preprocess():
 	w, h = 12, 1;
 	data = [[" " for x in range(w)] for y in range(h)]
 	return data
 	
 	
-def main():
-
+def regex_processing_main():
+	print('\nRegex Processing starting ... ')
 	data = preprocess()
 	st = []
 	i=0
@@ -405,9 +402,6 @@ def main():
           
 
 	out.close()
+	print('Regex Processing Completed.. \n ')
 
-print('Regex Processing starting ... ')
-
-main()
-
-print('Regex Processing Completed ')
+regex_processing_main()
