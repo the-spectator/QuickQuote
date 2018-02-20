@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from RegexProcessing import regex_processing_main
 from PreProcess import preprocess_main
 from Model_Training import model_making_main

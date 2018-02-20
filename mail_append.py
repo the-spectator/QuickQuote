@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from imapclient import IMAPClient
 from secrets import EMAIL, PASSWORD
