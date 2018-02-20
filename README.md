@@ -1,2 +1,2 @@
 # QuickQuote
-InterLinked modules of Underwriter
+Modular approach for QuickQuote
