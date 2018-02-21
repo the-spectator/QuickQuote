@@ -66,7 +66,7 @@ def prediction_main():
 	df['result'] = df['Lemmitize'].apply(PredictionModule)
 	df.to_csv(config.enlp_processed_csv,index=False, encoding = "utf-8")
 
-prediction_main()
+#prediction_main()
 	
 
 
