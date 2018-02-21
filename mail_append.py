@@ -7,7 +7,8 @@ from email.headerregistry import Address
 import email.utils
 import pandas as pd
 import config
-
+import collections
+import os
 
 def give_email_address(addresses):
     parts = email.utils.getaddresses(addresses)
@@ -16,18 +17,6 @@ def give_email_address(addresses):
     address = Address(display_name=display_name,
                       username=username, domain=domain)
     return address
-
-
-def append_mail(doc, server, folder, new_flags):
-    email_to = give_email_address([doc['Sender/email']])
-    email_from = give_email_address([config.email_from])
-    email_subject = 'Re:' + doc['Subject']
-    result = doc['result']
-    email_template = read_template()
-    email_content = email_template.format(product_=result,from_=doc['Sender/email'],subject_=doc['Subject'],sendon_=doc['sendOn'],content_=doc['Contents'])
-    mail = create_email(email_to, email_subject, email_from, email_content)
-    server.append(folder, mail, flags=(new_flags), msg_time=None)
-    pass
 
 # Create the base text message.
 
@@ -46,6 +35,31 @@ def read_template():
     with open(config.template, 'r', encoding='utf8') as file:
         email_template = file.read()
     return email_template
+
+# Marking the predicted emails
+
+def mark_predicted(id, message_id):
+    entry = collections.OrderedDict({'id' : id, 'message_id' : message_id})
+    df = pd.DataFrame([entry])
+    file_exists = os.path.isfile(config.predicted_csv)
+    if not file_exists or os.stat(config.predicted_csv).st_size == 0:
+        df.to_csv(config.predicted_csv, header=True, index=False, encoding='utf-8')
+    else:
+        df.to_csv(config.predicted_csv, mode='a', index=False,
+                  header=False, encoding='utf-8')    
+    
+
+def append_mail(doc, server, folder, new_flags):
+    email_to = give_email_address([doc['Sender/email']])
+    email_from = give_email_address([config.email_from])
+    email_subject = 'Re:' + doc['Subject']
+    result = doc['Offer']
+    email_template = read_template()
+    email_content = email_template.format(product_=result,from_=doc['Sender/email'],subject_=doc['Subject'],sendon_=doc['sendOn'],content_=doc['Contents'])
+    mail = create_email(email_to, email_subject, email_from, email_content)
+    server.append(folder, mail, flags=(new_flags), msg_time=None)
+    mark_predicted(doc['Id'], doc['MessageId'])
+    pass
 
 
 def login():

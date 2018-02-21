@@ -2,7 +2,6 @@
 
 from imapclient import IMAPClient
 from secrets import EMAIL, PASSWORD
-from config import imap_server, imap_port, eraw_data_csv
 from email import message_from_string
 from email.message import EmailMessage
 from email.headerregistry import Address
@@ -11,6 +10,7 @@ import csv
 import os
 import pandas as pd
 import collections
+import config
 
 
 def clean(data):
@@ -67,22 +67,40 @@ def write_to_csv(filename, data_dict):
     file_exists = os.path.isfile(filename)
     ordered_dict = [collections.OrderedDict(x) for x in data_dict]
     df = pd.DataFrame(ordered_dict)
-    if not file_exists or os.stat(filename).st_size == 0:
-        df.to_csv(filename, header=True, index=False, encoding='utf8')
-    else:
-        df.to_csv(filename, mode='a', index=False,
-                  header=False, encoding='utf8')
+    # if not file_exists or os.stat(filename).st_size == 0:
+    #     df.to_csv(filename, header=True, index=False, encoding='utf-8')
+    # else:
+    #     df.to_csv(filename, mode='a', index=False,
+    #               header=False, encoding='utf-8')
+    df.to_csv(filename, header=True, index=False, encoding='utf-8')
 
+
+def filter_predicted(server, unread):
+    df = pd.read_csv(config.predicted_csv, encoding='utf-8')
+    fetch = server.fetch(unread, ['ENVELOPE'])
+    new_unread = []
+    for msgid, data in fetch.items():
+        envelope = data[b'ENVELOPE']
+        message_id = envelope.message_id.decode('utf8')
+        if len(df[df['message_id'] == message_id]) == 0 :
+            new_unread.append(msgid)
+    return new_unread
 
 def mail_reader(folder, flags, new_flags):
-    server = IMAPClient(imap_server, imap_port, use_uid=True, ssl=True)
+    print('>> MailReader started ...')
+    print('>> Establishing Connections ....')
+    server = IMAPClient(config.imap_server, config.imap_port, use_uid=True, ssl=True)
     server.login(EMAIL, PASSWORD)
-
+    print('>> Connection Establishing ....')
     # Selecting the inbox folder
     message_box = server.select_folder(folder)
 
     # Gives list of unread messages
     messages = server.search(flags)
+
+    # Filter the already predicted unread emails
+    # print(messages)
+    messages = filter_predicted(server, messages)
     # print(messages)
 
     # get_flags method gives the flags(Unseen or Seen) for each message
@@ -90,6 +108,7 @@ def mail_reader(folder, flags, new_flags):
 
     # Get the id, msg_id, subject, date, sender_email, receiver_email, content
     # from email
+    print('>> Fetching EmailData ....')    
     body = server.fetch(messages, ['ENVELOPE', 'RFC822'])
     data_dict = []
     for msgid, data in body.items():
@@ -104,21 +123,22 @@ def mail_reader(folder, flags, new_flags):
         row = {'Id': msgid, 'MessageId': message_id, 'Subject': subject, 'Sender/email': from_,
                'recpient mail': to, 'sendOn': date, 'receivedOn': date, 'Offer': None, 'Contents': content}
         data_dict.append(row)
-
+    print('>> EmailData Fetched ....')
     # Writing data to csv
-    write_to_csv(eraw_data_csv, data_dict)
+    write_to_csv(config.eraw_data_csv, data_dict)
 
     # to set messages unseen to mark it seen use [b'\\Seen']
     server.set_flags(messages, new_flags)
 
+    print('>> Resetting the Flags ....')
     # messages = server.search(['ALL'])
     # print(server.get_flags(messages))
     server.logout()
-
+    print('>> Connection Disconnected Successfully ...')
 # For getting all unread emails from inbox
 # mail_reader('INBOX',['SEEN'],[b'\\SEEN'])
 
-#mail_reader('INBOX', ['UNSEEN'], [])
+# mail_reader('INBOX', ['UNSEEN'], [])
 
 # For getting all emails from sentbox
 # mail_reader('SENT',['ALL'])
