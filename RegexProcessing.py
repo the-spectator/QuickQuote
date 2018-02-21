@@ -6,8 +6,11 @@ import codecs
 import re
 from datetime import datetime
 import config
-#from search_term import give_med_terms
-
+try:
+  from search_term import give_med_terms
+except:
+  from QuickUMLS.search_term import give_med_terms
+  
 
 '''
 REGULAR EXPRESSIONS DEFINITIONS
@@ -388,11 +391,12 @@ def regex_processing_main():
 
 	out = open(config.regex_processed_csv, 'w', newline='')
 	wtr= csv.writer( out )
-	wtr.writerow(['Gender','Year_of_birth','Age(years)','Product Type','Face Amount','Weight','Height','Habit','Medication','Family','Property',''])
+	wtr.writerow(['Gender','Year_of_birth','Age(years)','Product Type','Face Amount','Weight','Height','Habit','Medication','Family','Property','Sender'])
 
 
 
-	with open(config.eraw_data_csv, 'r', encoding="utf-8") as f:
+	with open(config.raw_data_csv, 'r', encoding="UTF-8") as f:
+
 	    rows = csv.reader(f)
 	    for row in rows:
 

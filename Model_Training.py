@@ -98,7 +98,7 @@ def model_making_main():
 	df = pd.read_csv(config.nlp_processed_csv)
  
 	X = df['Lemmitize']
-	of = pd.read_csv(config.raw_data_csv, encoding='ISO-8859-1')
+	of = pd.read_csv(config.raw_data_csv, encoding='UTF-8')
 	y = of['Offer']
 	X_train,X_test,y_train,y_test = train_test_split(X,y)
 	vect = TfidfVectorizer(max_df=0.5, max_features=10000, min_df=1, use_idf=True , ngram_range=(1,2) , lowercase = True)
