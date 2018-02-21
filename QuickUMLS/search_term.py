@@ -42,7 +42,7 @@ from nltk.sentiment.util import mark_negation
 
 
 def give_med_terms(text):
-	dir_path = os.path.dirname(os.path.realpath(__file__))
+	dir_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 	src = dir_path + '/quickumlsfiles/'
 	matcher = QuickUMLS(src)
 	txt = sent_tokenize(text)
