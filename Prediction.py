@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 # File imports
 
@@ -53,7 +53,7 @@ def PredictionModule(doc):
 	return (pd)
 
 
-def main():
+def prediction_main():
 
 	df = pd.read_csv(config.eraw_data_csv, encoding='utf-8')
 
@@ -66,7 +66,7 @@ def main():
 	df['result'] = df['Lemmitize'].apply(PredictionModule)
 	df.to_csv(config.enlp_processed_csv,index=False, encoding = "utf-8")
 
-main()
+#prediction_main()
 	
 
 

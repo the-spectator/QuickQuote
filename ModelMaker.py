@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 from RegexProcessing import regex_processing_main
 from PreProcess import preprocess_main

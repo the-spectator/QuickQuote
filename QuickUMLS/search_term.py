@@ -63,6 +63,8 @@ def negation_check(sentence, set_terms):
 	words = word_tokenize(sentence)
 	negations = mark_negation(words)
 	only_neg = list(set(negations).difference(words))
+	if(len(only_neg) == 0):
+		return set_terms
 	only_neg = [x[:-4] for x in only_neg]
 	terms = list(set_terms)
 	for i, term in enumerate(terms):

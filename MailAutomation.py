@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 from imapclient import IMAPClient
 from secrets import EMAIL, PASSWORD
@@ -118,7 +118,7 @@ def mail_reader(folder, flags, new_flags):
 # For getting all unread emails from inbox
 # mail_reader('INBOX',['SEEN'],[b'\\SEEN'])
 
-mail_reader('INBOX', ['UNSEEN'], [])
+#mail_reader('INBOX', ['UNSEEN'], [])
 
 # For getting all emails from sentbox
 # mail_reader('SENT',['ALL'])

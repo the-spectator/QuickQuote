@@ -6,8 +6,11 @@ import codecs
 import re
 from datetime import datetime
 import config
-#from search_term import give_med_terms
-
+try:
+  from search_term import give_med_terms
+except:
+  from QuickUMLS.search_term import give_med_terms
+  
 
 '''
 REGULAR EXPRESSIONS DEFINITIONS
@@ -393,6 +396,7 @@ def regex_processing_main():
 
 
 	with open(config.raw_data_csv, 'r', encoding="UTF-8") as f:
+
 	    rows = csv.reader(f)
 	    for row in rows:
 
@@ -404,4 +408,4 @@ def regex_processing_main():
 	out.close()
 	print('Regex Processing Completed.. \n ')
 
-
+#regex_processing_main()
