@@ -16,4 +16,4 @@ def functionalZone(doc):
 
 
 
-mail_cleaner_main()
+

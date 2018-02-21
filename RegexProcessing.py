@@ -392,7 +392,7 @@ def regex_processing_main():
 
 
 
-	with open(config.raw_data_csv, 'r', encoding="ISO-8859-1") as f:
+	with open(config.raw_data_csv, 'r', encoding="UTF-8") as f:
 	    rows = csv.reader(f)
 	    for row in rows:
 
@@ -404,4 +404,4 @@ def regex_processing_main():
 	out.close()
 	print('Regex Processing Completed.. \n ')
 
-regex_processing_main()
+
