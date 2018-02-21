@@ -6,10 +6,11 @@ import codecs
 import re
 from datetime import datetime
 import config
-try:
-  from search_term import give_med_terms
-except:
-  from QuickUMLS.search_term import give_med_terms
+
+#try:
+#  from search_term import give_med_terms
+#except:
+#  from QuickUMLS.search_term import give_med_terms
   
 
 '''
