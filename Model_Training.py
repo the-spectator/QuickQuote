@@ -31,7 +31,7 @@ import time
 
 def rem_punt(doc):
 	
-	ans = re.sub('"|\\n|\(|\)|\.|[$!--+@#:]',' ',doc)
+	ans = re.sub('"|\\n|\(|\)|\.|[$!--+#:]',' ',doc)
 	ans = re.sub(' +',' ',ans)
 	ans = ans.lower()
 	return ans
