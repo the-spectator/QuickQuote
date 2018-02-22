@@ -84,23 +84,27 @@ def model_making(model_name, vect , model , X_train , y_train , X_test , y_test)
 	print("{:20} {:^20.3f} {:^20.3f} {:20.3f}s \n ".format(model_name , results , training_time , prediction_time ))
 	#matrix_confusion.append(confusion_matrix(y_test, y_pred))
 
+def conversion(doc):
+	return(str(doc))
+
 def model_making_main():
     
 	print("\nReading file preprocessed")
 
 	df = pd.read_csv(config.preprocessed_csv, encoding='UTF-8')
 	df['ColumnA'] = df[df.columns[0:11]].apply(lambda x: ','.join(x.dropna()),axis=1)
-
+	
 	df['Lemmitize'] = df['ColumnA'].apply(rem_punt).apply(tokenize)
 	print("Lemmatization completed .. ")
-
+	df['Lemmitize'] = df['Lemmitize'].apply(conversion)
 	df.to_csv(config.nlp_processed_csv,index=False, encoding = "utf-8")
 
 	df = pd.read_csv(config.nlp_processed_csv)
  
 	X = df['Lemmitize']
-	of = pd.read_csv(config.raw_data_csv, encoding='UTF-8')
+	of = pd.read_csv(config.raw_data_csv, encoding='UTF-8')	
 	y = of['Offer']
+	
 	X_train,X_test,y_train,y_test = train_test_split(X,y)
 	vect = TfidfVectorizer(max_df=0.5, max_features=10000, min_df=1, use_idf=True , ngram_range=(1,2) , lowercase = True)
 	matrix = vect.fit_transform(X.values)
@@ -125,6 +129,6 @@ def model_making_main():
 	print("Model making completed ...")
 
 
-
+model_making_main()
 
 

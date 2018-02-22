@@ -409,4 +409,4 @@ def regex_processing_main():
 	out.close()
 	print('Regex Processing Completed.. \n ')
 
-#regex_processing_main()
+regex_processing_main()

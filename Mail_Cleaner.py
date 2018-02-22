@@ -5,7 +5,7 @@ import config
 def mail_cleaner_main():
 	
 	print("\nMail Cleaning starting .. ")
-	df = pd.read_csv(config.raw_data_csv, encoding='ISO-8859-1')
+	df = pd.read_csv(config.raw_data_csv, encoding='utf-8')
 	df['Contents'] = df['Contents'].apply(functionalZone)
 #	df['Offer'] = df['Offer'].apply('rem_punct')
 #	df['Offer_noise_free'] = apply.('Standardize')	
@@ -14,7 +14,12 @@ def mail_cleaner_main():
 
 def functionalZone(doc):
 	p = zp.parse(doc)
-	return (str(p['body'])+str(p['reply_text']))
+	ans = " "
 
+	if (str(p['body']) is not None):
+		ans = ans + str(p['body'])
+	if(str(p['reply_text']) is not None):
+		ans = ans + str(p['reply_text'])
+	return ans
 
-
+mail_cleaner_main()
