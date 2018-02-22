@@ -5,6 +5,7 @@ config.pyc
 .gitignore~
 *.csv~
 *.sav
+SavedModels/
 temp.py
 QuickUMLS/.gitignore
 QuickUMLS/LICENSE.txt

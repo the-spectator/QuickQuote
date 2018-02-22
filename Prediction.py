@@ -10,6 +10,9 @@ from nltk.tokenize import wordpunct_tokenize,sent_tokenize
 from nltk import pos_tag
 from nltk.stem.wordnet import WordNetLemmatizer
 import re
+from Mail_Cleaner import mail_cleaner_main
+from RegexProcessing import regex_processing_main
+from PreProcess import preprocess_main
 
 
 #Removes all punctuations which acts as noise
@@ -54,10 +57,16 @@ def PredictionModule(doc):
 
 
 def prediction_main():
-
-	df = pd.read_csv(config.eraw_data_csv, encoding='utf-8')
-
-	df['ColumnA'] = df[df.columns[0:9]].apply(lambda x: ','.join(x.dropna().astype(str)),axis=1)
+	print('Mail cleaning starting .  ')
+	mail_cleaner_main()
+	print('Mail cleaning complete .')
+	print('Regex Processing starting')
+	regex_processing_main()
+	print('Regex complete')
+	preprocess_main()
+		
+	df = pd.read_csv(config.preprocessed_csv, encoding='UTF-8')
+	df['Contents'] = df[df.columns[0:9]].apply(lambda x: ','.join(x.dropna().astype(str)),axis=1)
 
 	df['Lemmitize'] = df['Contents'].apply(rem_punt).apply(tokenize)
 

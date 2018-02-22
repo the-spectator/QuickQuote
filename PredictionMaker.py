@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from RegexProcessing import regex_processing_main
-from PreProcess import preprocess_main
+
 from MailAutomation import mail_reader
 from Prediction import prediction_main
 from mail_append import mail_append_main
-
+import config
 def prediction_maker_main():
+	print('Fetching Mails ...')
 	mail_reader('INBOX', ['UNSEEN'], [])
-	regex_processing_main()
-	preprocess_main()
+	print('Mail Downloaded')
+	config.raw_data_csv = 'Data/eraw_data.csv'
 	prediction_main()
-	mail_append_main()
 	print("Completed ...")
 
 prediction_maker_main()

@@ -39,7 +39,7 @@ def preprocess_main():
 	df = df.iloc[1:]
 	df = df.drop(columns=['Year_of_birth'])
 	of = pd.read_csv(config.raw_data_csv,encoding = 'UTF-8')
-	df['Original'] = of['recepientemail']
+	df['Original'] = of['Sender/email']
 	
 	df['Weight'] = df['Weight'].apply(changeWt)
 	print("Weight updation completed.. ")
