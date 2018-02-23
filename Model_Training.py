@@ -130,6 +130,6 @@ def model_making_main(file):
 	model_making("SGDClassifier",vect, model7, X_train, y_train, X_test, y_test)
 	print("Model making completed ...")
 
-model_making_main(config.raw_data_csv)
+#model_making_main(config.raw_data_csv)
 
 
