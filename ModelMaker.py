@@ -9,11 +9,11 @@ import config
 
 def model_maker_main():
 
-	config.raw_data_csv = 'Data/raw_data1.csv'
-	mail_cleaner_main()
-	regex_processing_main()
-	preprocess_main()
-	model_making_main()
+	# config.raw_data_csv = 'Data/raw_data1.csv'
+	mail_cleaner_main(config.raw_data_csv)
+	regex_processing_main(config.raw_data_csv)
+	preprocess_main(config.raw_data_csv)
+	model_making_main(config.raw_data_csv)
 	print("Completed ...")
 
 model_maker_main()

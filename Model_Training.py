@@ -87,7 +87,7 @@ def model_making(model_name, vect , model , X_train , y_train , X_test , y_test)
 def conversion(doc):
 	return(str(doc))
 
-def model_making_main():
+def model_making_main(file):
     
 	print("\nReading file preprocessed")
 
@@ -102,7 +102,7 @@ def model_making_main():
 	df = pd.read_csv(config.nlp_processed_csv)
  
 	X = df['Lemmitize']
-	of = pd.read_csv(config.raw_data_csv, encoding='UTF-8')	
+	of = pd.read_csv(file, encoding='UTF-8')	
 	y = of['Offer']
 	
 	X_train,X_test,y_train,y_test = train_test_split(X,y)
@@ -129,6 +129,6 @@ def model_making_main():
 	print("Model making completed ...")
 
 
-model_making_main()
+#model_making_main()
 
 

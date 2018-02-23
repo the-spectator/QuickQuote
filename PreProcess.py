@@ -39,13 +39,13 @@ def emailfirst(doc):
 	else:
 		doc = ""
 		return doc
-def preprocess_main():
+def preprocess_main(file):
 	print("\nPre processing starting .. ")
 	df = pd.read_csv(config.regex_processed_csv, encoding='UTF-8')
 	df = df.iloc[1:]
 	df = df.drop(columns=['Year_of_birth'])
 	
-	of = pd.read_csv(config.raw_data_csv,encoding = 'UTF-8')
+	of = pd.read_csv(file,encoding = 'UTF-8')
 	
 	of['Sender/email'] = of['Sender/email'].apply(emailfirst)
 	df['Original'] = of['Sender/email'].values
@@ -54,11 +54,11 @@ def preprocess_main():
 	df['Face Amount'] = df['Face Amount'].apply(changeFace)
 	print("Face amount updation completed ... ")
 	df['Temp'] = df['Original']
-	df['Original'] = df['Sender']
-	df['Sender'] = df['Temp']
+	df['Original'] = df['Sender/email']
+	df['Sender/email'] = df['Temp']
 	df = df.drop(columns=['Temp'])
 	
 	df.to_csv(config.preprocessed_csv,index=False, encoding = "utf-8")
 	print("Pre processing completed ...")
 	
-preprocess_main()
+# preprocess_main(config.eraw_data_csv)

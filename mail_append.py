@@ -36,6 +36,9 @@ def read_template():
         email_template = file.read()
     return email_template
 
+def empty_predicted_mails():
+    open(config.predicted_csv,encoding = 'utf-8', mode = 'w').close()
+
 # Marking the predicted emails
 
 def mark_predicted(id, message_id):
@@ -70,9 +73,12 @@ def login():
 
 
 def mail_append_main():
+    print('>> MailAppend started')
     server = login()
-    df = pd.read_csv(config.nlp_processed_csv, encoding='utf8')
+    df = pd.read_csv(config.eraw_data_csv, encoding='utf8')
+    empty_predicted_mails()
     df.apply(append_mail, args=(server, 'Test', []), axis=1)
     server.logout()
+    print('>> MailAppend Ended')
 
-#mail_append_main()
+# mail_append_main()

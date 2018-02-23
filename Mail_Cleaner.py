@@ -2,14 +2,15 @@ import EFZP as zp
 import pandas as pd
 import config
 
-def mail_cleaner_main():
+def mail_cleaner_main(file):
 	
 	print("\nMail Cleaning starting .. ")
-	df = pd.read_csv(config.raw_data_csv, encoding='utf-8')
+	# print(config.raw_data_csv)
+	df = pd.read_csv(file, encoding='utf-8')
 	df['Contents'] = df['Contents'].apply(functionalZone)
 #	df['Offer'] = df['Offer'].apply('rem_punct')
 #	df['Offer_noise_free'] = apply.('Standardize')	
-	df.to_csv(config.raw_data_csv,index=False, encoding = "utf-8")	
+	df.to_csv(file,index=False, encoding = "utf-8")	
 	print("Mail cleaning completed ...")
 
 def functionalZone(doc):
@@ -22,4 +23,4 @@ def functionalZone(doc):
 		ans = ans + str(p['reply_text'])
 	return ans
 
-mail_cleaner_main()
+# mail_cleaner_main(config.eraw_data_csv)

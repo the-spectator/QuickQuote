@@ -7,10 +7,10 @@ import re
 from datetime import datetime
 import config
 
-#try:
-#  from search_term import give_med_terms
-#except:
-#  from QuickUMLS.search_term import give_med_terms
+try:
+  from search_term import give_med_terms
+except:
+  from QuickUMLS.search_term import give_med_terms
   
 
 '''
@@ -383,7 +383,7 @@ def preprocess():
 	return data
 	
 	
-def regex_processing_main():
+def regex_processing_main(file):
 	print('\nRegex Processing starting ... ')
 	data = preprocess()
 	st = []
@@ -392,11 +392,9 @@ def regex_processing_main():
 
 	out = open(config.regex_processed_csv, 'w', newline='')
 	wtr= csv.writer( out )
-	wtr.writerow(['Gender','Year_of_birth','Age(years)','Product Type','Face Amount','Weight','Height','Habit','Medication','Family','Property','Sender'])
+	wtr.writerow(['Gender','Year_of_birth','Age(years)','Product Type','Face Amount','Weight','Height','Habit','Medication','Family','Property','Sender/email'])
 
-
-
-	with open(config.raw_data_csv, 'r', encoding="UTF-8") as f:
+	with open(file, 'r', encoding="UTF-8") as f:
 
 	    rows = csv.reader(f)
 	    for row in rows:
@@ -409,4 +407,4 @@ def regex_processing_main():
 	out.close()
 	print('Regex Processing Completed.. \n ')
 
-regex_processing_main()
+# regex_processing_main(config.eraw_data_csv)
