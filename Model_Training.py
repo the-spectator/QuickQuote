@@ -19,6 +19,7 @@ from sklearn.naive_bayes import GaussianNB,MultinomialNB
 from sklearn.ensemble import ExtraTreesClassifier,RandomForestClassifier
 from sklearn.linear_model import SGDClassifier,LogisticRegression
 from sklearn import linear_model
+from sklearn.model_selection import cross_val_score
 import pickle
 from sklearn.metrics import classification_report
 from sklearn.metrics import accuracy_score
@@ -106,7 +107,7 @@ def model_making_main(file):
 	of = pd.read_csv(file, encoding='UTF-8')	
 	y = of['Offer']
 	
-	X_train,X_test,y_train,y_test = train_test_split(X,y)
+	X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.2,random_state=4)
 	vect = TfidfVectorizer(max_df=0.5, max_features=10000, min_df=1, use_idf=True , ngram_range=(1,2) , lowercase = True)
 	matrix = vect.fit_transform(X.values)
 	#print(matrix)
@@ -119,7 +120,7 @@ def model_making_main(file):
 	
 	#model1 = XGBClassifier(nthread=4,n_estimators=1000)
 	model3 = RandomForestClassifier(n_estimators=60,n_jobs=3,max_features = "auto", min_samples_leaf = 50)
-	model4 = SVC(kernel='rbf', C=100,gamma=10)
+	model4 = SVC(kernel='rbf', C=1,gamma=10)
 	model5 = LogisticRegression()
 	model7 = SGDClassifier()
 	#model_making("XGBOOST",vect, model1, X_train, y_train, X_test, y_test)	
@@ -129,7 +130,6 @@ def model_making_main(file):
 	model_making("SGDClassifier",vect, model7, X_train, y_train, X_test, y_test)
 	print("Model making completed ...")
 
-
-# model_making_main(config.raw_data_csv)
+model_making_main(config.raw_data_csv)
 
 
