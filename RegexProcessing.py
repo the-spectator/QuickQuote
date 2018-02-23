@@ -392,7 +392,7 @@ def regex_processing_main(file):
 
 	out = open(config.regex_processed_csv, 'w', newline='')
 	wtr= csv.writer( out )
-	wtr.writerow(['Gender','Year_of_birth','Age(years)','Product Type','Face Amount','Weight','Height','Habit','Medication','Family','Property','Sender/email'])
+	wtr.writerow(['Gender','Year_of_birth','Age(years)','Product Type','Face Amount','Weight','Height','Habit','Medication','Family','Property','Senderemail'])
 
 	with open(file, 'r', encoding="UTF-8") as f:
 

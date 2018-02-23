@@ -1,4 +1,4 @@
-Id,MessageID,Subject,Sender/email,recpient mail,sendOn,receivedOn,Offer,Contents
+ID,MessageID,Subject,Senderemail,recepientemail,SentOn,ReceivedOn,Offer,Contents
 ,,,xyz@gmail,,,,A," Gender: FEMALE
 DOB : APR 20, 1977
 Product Type: Permanent

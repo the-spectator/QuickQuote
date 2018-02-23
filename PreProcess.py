@@ -47,15 +47,15 @@ def preprocess_main(file):
 	
 	of = pd.read_csv(file,encoding = 'UTF-8')
 	
-	of['Sender/email'] = of['Sender/email'].apply(emailfirst)
-	df['Original'] = of['Sender/email'].values
+	of['Senderemail'] = of['Senderemail'].apply(emailfirst)
+	df['Original'] = of['Senderemail'].values
 	df['Weight'] = df['Weight'].apply(changeWt)
 	print("Weight updation completed.. ")
 	df['Face Amount'] = df['Face Amount'].apply(changeFace)
 	print("Face amount updation completed ... ")
 	df['Temp'] = df['Original']
-	df['Original'] = df['Sender/email']
-	df['Sender/email'] = df['Temp']
+	df['Original'] = df['Senderemail']
+	df['Senderemail'] = df['Temp']
 	df = df.drop(columns=['Temp'])
 	
 	df.to_csv(config.preprocessed_csv,index=False, encoding = "utf-8")

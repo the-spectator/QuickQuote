@@ -21,3 +21,7 @@ predicted_csv = 'Data/predicted.csv'
 
 # email
 email_from = 'Trial waliid <trial_wali_id@outlook.com>'
+email_box = 'INBOX'
+email_new_flags = []
+email_flags = ['UNSEEN']
+append_box = 'Test'
