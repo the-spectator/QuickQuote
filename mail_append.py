@@ -66,8 +66,7 @@ def append_mail(doc, server, folder, new_flags):
 
 
 def login():
-    server = IMAPClient(config.imap_server,
-                        config.imap_port, use_uid=True, ssl=True)
+    server = IMAPClient(config.imap_server, use_uid=True, ssl=True)
     server.login(EMAIL, PASSWORD)
     return server
 

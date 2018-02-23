@@ -57,4 +57,4 @@ def preprocess_main(file):
 	df.to_csv(config.preprocessed_csv,index=False, encoding = "utf-8")
 	print("Pre processing completed ...")
 	
-preprocess_main(config.raw_data_csv)
+# preprocess_main(config.raw_data_csv)

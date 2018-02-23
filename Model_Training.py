@@ -130,6 +130,6 @@ def model_making_main(file):
 	print("Model making completed ...")
 
 
-model_making_main(config.raw_data_csv)
+# model_making_main(config.raw_data_csv)
 
 

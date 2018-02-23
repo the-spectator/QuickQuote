@@ -82,7 +82,7 @@ def prediction_main(file):
 	df.to_csv(config.enlp_processed_csv,index=False, encoding = "utf-8")
 	of.to_csv(config.eraw_data_csv,index=False, encoding = "utf-8")
 
-prediction_main(config.eraw_data_csv)
+# prediction_main(config.eraw_data_csv)
 	
 
 

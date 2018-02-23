@@ -89,7 +89,7 @@ def filter_predicted(server, unread):
 def mail_reader(folder, flags, new_flags):
     print('>> MailReader started ...')
     print('>> Establishing Connections ....')
-    server = IMAPClient(config.imap_server, config.imap_port, use_uid=True, ssl=True)
+    server = IMAPClient(config.imap_server, use_uid=True, ssl=True)
     server.login(EMAIL, PASSWORD)
     print('>> Connection Establishing ....')
     # Selecting the inbox folder
