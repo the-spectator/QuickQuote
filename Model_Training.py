@@ -26,8 +26,9 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
 #from xgboost.sklearn import XGBClassifier
 import time
-
-
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from DataRepresentation import visualize
 
 #Removes all punctuations which acts as noise
 
@@ -89,6 +90,10 @@ def model_making(model_name, vect , model , X_train , y_train , X_test , y_test)
 def conversion(doc):
 	return(str(doc))
 
+
+	
+	
+
 def model_making_main(file):
     
 	print("\nReading file preprocessed")
@@ -109,7 +114,9 @@ def model_making_main(file):
 	
 	X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.2,random_state=4)
 	vect = TfidfVectorizer(max_df=0.5, max_features=10000, min_df=1, use_idf=True , ngram_range=(1,2) , lowercase = True)
-	matrix = vect.fit_transform(X.values)
+	represent = TfidfVectorizer(max_df=0.5, max_features=10000, min_df=1, use_idf=True , ngram_range=(1,1) , lowercase = True)
+	matrix = represent.fit_transform(X.values)
+	#visualize(represent,matrix,X,y)
 	#print(matrix)
 
 	#for i, feature in enumerate(vect.get_feature_names()):
@@ -122,13 +129,14 @@ def model_making_main(file):
 	model3 = RandomForestClassifier(n_estimators=60,n_jobs=3,max_features = "auto", min_samples_leaf = 50)
 	model4 = SVC(kernel='rbf', C=1,gamma=10)
 	model5 = LogisticRegression()
-	model7 = SGDClassifier()
+	model7 = SGDClassifier(alpha=.0001)
 	#model_making("XGBOOST",vect, model1, X_train, y_train, X_test, y_test)	
 	model_making("Random Forest",vect, model3, X_train, y_train, X_test, y_test)
 	model_making("SVM" , vect, model4, X_train, y_train, X_test, y_test)
 	model_making("Logistic Regression",vect, model5, X_train, y_train, X_test, y_test)
 	model_making("SGDClassifier",vect, model7, X_train, y_train, X_test, y_test)
 	print("Model making completed ...")
+
 
 #model_making_main(config.raw_data_csv)
 
