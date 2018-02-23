@@ -68,7 +68,7 @@ def prediction_main(file):
 	preprocess_main(file)
 
 	df = pd.read_csv(config.preprocessed_csv, encoding='UTF-8')
-	df['Contents'] = df[df.columns[0:9]].apply(
+	df['Contents'] = df[df.columns[0:12]].apply(
 	    lambda x: ','.join(x.dropna().astype(str)), axis=1)
 
 	df['Lemmitize'] = df['Contents'].apply(rem_punt).apply(tokenize)
@@ -82,7 +82,7 @@ def prediction_main(file):
 	df.to_csv(config.enlp_processed_csv,index=False, encoding = "utf-8")
 	of.to_csv(config.eraw_data_csv,index=False, encoding = "utf-8")
 
-# prediction_main(config.eraw_data_csv)
+prediction_main(config.eraw_data_csv)
 	
 
 

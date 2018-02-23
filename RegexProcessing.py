@@ -6,14 +6,14 @@ import codecs
 import re
 from datetime import datetime
 import config
-
+'''
 try:
   from search_term import give_med_terms
 except:
   from QuickUMLS.search_term import give_med_terms
   
 
-'''
+
 REGULAR EXPRESSIONS DEFINITIONS
 '''
 
@@ -368,7 +368,7 @@ def reg(st,i,data,wtr):
         else:#Write else outsite condition (to stop rewriting of above cell)
             data[i][10]=""
 
-    data[i][11]=st
+    data[i][13]=st
 
 	#medical data
         #data[i][11] = give_med_terms(line)
@@ -378,7 +378,7 @@ def reg(st,i,data,wtr):
 
 
 def preprocess():
-	w, h = 12, 1;
+	w, h = 14, 1;
 	data = [[" " for x in range(w)] for y in range(h)]
 	return data
 	
@@ -392,7 +392,7 @@ def regex_processing_main(file):
 
 	out = open(config.regex_processed_csv, 'w', newline='')
 	wtr= csv.writer( out )
-	wtr.writerow(['Gender','Year_of_birth','Age(years)','Product Type','Face Amount','Weight','Height','Habit','Medication','Family','Property','Senderemail'])
+	wtr.writerow(['Gender','Year_of_birth','Age(years)','Product Type','Face Amount','Weight','Height','Habit','Medication','Family','Property','Medical Data','Senderemail','Contents'])
 
 	with open(file, 'r', encoding="UTF-8") as f:
 
@@ -407,4 +407,4 @@ def regex_processing_main(file):
 	out.close()
 	print('Regex Processing Completed.. \n ')
 
-# regex_processing_main(config.eraw_data_csv)
+regex_processing_main(config.raw_data_csv)

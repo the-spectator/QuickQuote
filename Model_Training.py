@@ -93,7 +93,7 @@ def model_making_main(file):
 	print("\nReading file preprocessed")
 
 	df = pd.read_csv(config.preprocessed_csv, encoding='UTF-8')
-	df['ColumnA'] = df[df.columns[0:11]].apply(lambda x: ','.join(x.dropna()),axis=1)
+	df['ColumnA'] = df[df.columns[0:12]].apply(lambda x: ','.join(x.dropna()),axis=1)
 	
 	df['Lemmitize'] = df['ColumnA'].apply(rem_punt).apply(tokenize)
 	print("Lemmatization completed .. ")
@@ -130,6 +130,6 @@ def model_making_main(file):
 	print("Model making completed ...")
 
 
-#model_making_main()
+model_making_main(config.raw_data_csv)
 
 
