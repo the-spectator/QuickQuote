@@ -1,11 +1,11 @@
 *.py~
 *.pyc
 config.pyc
-/__pycache__
+__pycache__/
 .gitignore~
 *.csv~
 *.sav
-/SavedModels
+SavedModels/
 temp.py
 QuickUMLS/.gitignore
 QuickUMLS/LICENSE.txt
