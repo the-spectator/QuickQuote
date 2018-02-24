@@ -9,6 +9,10 @@ import pandas as pd
 import config
 import collections
 import os
+import logging
+
+logging.basicConfig(filename=config.log_file, level=logging.DEBUG)
+
 
 def give_email_address(addresses):
     parts = email.utils.getaddresses(addresses)
@@ -72,12 +76,12 @@ def login():
 
 
 def mail_append_main():
-    print('>> MailAppend started')
+    logging.debug('MailAppend started')
     server = login()
     df = pd.read_csv(config.eraw_data_csv, encoding='utf8')
     empty_predicted_mails()
     df.apply(append_mail, args=(server, config.append_box, []), axis=1)
     server.logout()
-    print('>> MailAppend Ended')
+    logging.debug('MailAppend Ended')
 
 # mail_append_main()

@@ -10,14 +10,14 @@ import logging
 
 logging.basicConfig(filename="Data/logfile.log", level=logging.DEBUG)
 
-'''
+
 try:
 	from search_term import give_med_terms
 except:
 	from QuickUMLS.search_term import give_med_terms
 
 
-
+'''
 REGULAR EXPRESSIONS DEFINITIONS
 '''
 
@@ -384,7 +384,7 @@ def reg(st, i, data, wtr):
 
 
 		# medical data
-		#data[i][11] = give_med_terms(line)
+		data[i][11] = give_med_terms(line)
 	data[i][13] = st
 	wtr.writerows(data)
 

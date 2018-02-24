@@ -7,7 +7,7 @@ from Mail_Cleaner import mail_cleaner_main
 import config
 import logging
 
-logging.basicConfig(filename="Data/logfile.log", level=logging.DEBUG)
+logging.basicConfig(filename=config.log_file, level=logging.DEBUG)
 
 def model_maker_main():
 

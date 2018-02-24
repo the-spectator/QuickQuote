@@ -52,7 +52,7 @@ def lemmatize(token, tag):
 
 
 def PredictionModule(doc):
-	loaded_model = pickle.load(open('SavedModels/SVM.sav', 'rb'))
+	loaded_model = pickle.load(open('SavedModels/'+ config.raw_data_type + 'SVM.sav', 'rb'))
 
 	pd = loaded_model.predict([doc])
 	return (pd)

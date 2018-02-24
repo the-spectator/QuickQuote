@@ -11,7 +11,9 @@ import os
 import pandas as pd
 import collections
 import config
+import logging
 
+logging.basicConfig(filename=config.log_file, level=logging.DEBUG)
 
 def clean(data):
     # employing the lxml parser to clean the content of mail
@@ -36,7 +38,7 @@ def get_decoded_email_body(message_body):
     if msg.is_multipart():
         html = None
         for part in msg.get_payload():
-            #print( "%s, %s" % (part.get_content_type(), part.get_content_charset()))
+            #logging.debug( "%s, %s" % (part.get_content_type(), part.get_content_charset()))
             if part.get_content_charset() is None:
                 # We cannot know the character set, so return decoded
                 # "something"
@@ -87,11 +89,11 @@ def filter_predicted(server, unread):
     return new_unread
 
 def mail_reader(folder, flags, new_flags):
-    print('>> MailReader started ...')
-    print('>> Establishing Connections ....')
+    logging.debug('MailReader started ...')
+    logging.debug('Establishing Connections ....')
     server = IMAPClient(config.imap_server, use_uid=True, ssl=True)
     server.login(EMAIL, PASSWORD)
-    print('>> Connection Establishing ....')
+    logging.debug('Connection Established ....')
     # Selecting the inbox folder
     message_box = server.select_folder(folder)
 
@@ -99,16 +101,16 @@ def mail_reader(folder, flags, new_flags):
     messages = server.search(flags)
 
     # Filter the already predicted unread emails
-    # print(messages)
+    # logging.debug(messages)
     messages = filter_predicted(server, messages)
-    # print(messages)
+    # logging.debug(messages)
 
     # get_flags method gives the flags(Unseen or Seen) for each message
-    # print(server.get_flags(messages))
+    # logging.debug(server.get_flags(messages))
 
     # Get the id, msg_id, subject, date, sender_email, receiver_email, content
     # from email
-    print('>> Fetching EmailData ....')    
+    logging.debug('Fetching EmailData ....')    
     body = server.fetch(messages, ['ENVELOPE', 'RFC822'])
     data_dict = []
     for msgid, data in body.items():
@@ -123,18 +125,18 @@ def mail_reader(folder, flags, new_flags):
         row = {'ID': msgid, 'MessageID': message_id, 'Subject': subject, 'Senderemail': from_,
                'recepientemail': to, 'SentOn': date, 'ReceivedOn': date, 'Offer_noise_free': None, 'Contents': content}
         data_dict.append(row)
-    print('>> EmailData Fetched ....')
+    logging.debug('EmailData Fetched ....')
     # Writing data to csv
     write_to_csv(config.eraw_data_csv, data_dict)
 
     # to set messages unseen to mark it seen use [b'\\Seen']
     server.set_flags(messages, new_flags)
 
-    print('>> Resetting the Flags ....')
+    logging.debug('Resetting the Flags ....')
     # messages = server.search(['ALL'])
-    # print(server.get_flags(messages))
+    # logging.debug(server.get_flags(messages))
     server.logout()
-    print('>> Connection Disconnected Successfully ...')
+    logging.debug('Connection Disconnected Successfully ...')
 # For getting all unread emails from inbox
 # mail_reader('INBOX',['SEEN'],[b'\\SEEN'])
 

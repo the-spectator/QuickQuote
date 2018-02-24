@@ -3,17 +3,16 @@ import pandas as pd
 import config
 import logging
 
-logging.basicConfig(filename="Data/logfile.log", level=logging.DEBUG)
+logging.basicConfig(filename=config.log_file, level=logging.DEBUG)
 
 
 def mail_cleaner_main(file):
 	
-	logging.debug("\nMail Cleaning starting .. ")
-	# print(config.raw_data_csv)
+	logging.debug("Mail Cleaning starting .. ")
 	df = pd.read_csv(file, encoding='utf-8')
 	df['Contents'] = df['Contents'].apply(functionalZone)
-#	df['Offer'] = df['Offer'].apply('rem_punct')
-#	df['Offer_noise_free'] = apply.('Standardize')	
+	# df['Offer'] = df['Offer'].apply('rem_punct')
+	# df['Offer_noise_free'] = apply.('Standardize')	
 	df.to_csv(file,index=False, encoding = "utf-8")	
 	logging.debug("Mail cleaning completed ...")
 

@@ -31,7 +31,7 @@ from sklearn.cluster import KMeans
 from DataRepresentation import visualize
 import logging
 
-logging.basicConfig(filename="Data/logfile.log", level=logging.DEBUG)
+logging.basicConfig(filename=config.log_file, level=logging.DEBUG)
 
 #Removes all punctuations which acts as noise
 
@@ -68,7 +68,7 @@ def lemmatize(token, tag):
 	return lemmatizer.lemmatize(token, tag)
 
 def model_saving(model_name,model):
-	filename = model_name +'.sav'
+	filename = config.raw_data_type + model_name + '.sav'
 	pickle.dump(model, open('SavedModels/'+filename, 'wb'))
 
 def model_making(model_name, vect , model , X_train , y_train , X_test , y_test):

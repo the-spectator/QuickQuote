@@ -25,3 +25,9 @@ email_box = 'INBOX'
 email_new_flags = []
 email_flags = ['UNSEEN']
 append_box = 'Test'
+
+# Logs
+log_file = 'Log/logfile.log'
+
+# raw_data_type
+raw_data_type = '1k_'
