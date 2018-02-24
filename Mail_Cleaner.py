@@ -1,6 +1,7 @@
 import EFZP as zp
 import pandas as pd
 import config
+import logging
 
 def mail_cleaner_main(file):
 	
