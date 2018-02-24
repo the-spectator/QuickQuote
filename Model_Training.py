@@ -29,6 +29,9 @@ import time
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from DataRepresentation import visualize
+import logging
+
+logging.basicConfig(filename="Data/logfile.log", level=logging.DEBUG)
 
 #Removes all punctuations which acts as noise
 
@@ -69,7 +72,7 @@ def model_saving(model_name,model):
 	pickle.dump(model, open('SavedModels/'+filename, 'wb'))
 
 def model_making(model_name, vect , model , X_train , y_train , X_test , y_test):
-	print("Model training started... " ,model_name)
+	logging.debug("Model training started... " ,model_name)
 	t1 =time.time()
 	clf = make_pipeline(vect,model)
 	clf.fit(X_train,y_train)
@@ -85,6 +88,7 @@ def model_making(model_name, vect , model , X_train , y_train , X_test , y_test)
 	
 	results = (accuracy_score(y_test, y_pred)*100)
 	print("{:20} {:^20.3f} {:^20.3f} {:20.3f}s \n ".format(model_name , results , training_time , prediction_time ))
+	logging.debug("{:20} {:^20.3f} {:^20.3f} {:20.3f}s \n ".format(model_name , results , training_time , prediction_time ))
 	#matrix_confusion.append(confusion_matrix(y_test, y_pred))
 
 def conversion(doc):
@@ -96,13 +100,13 @@ def conversion(doc):
 
 def model_making_main(file):
     
-	print("\nReading file preprocessed")
+	logging.debug("\nReading file preprocessed")
 
 	df = pd.read_csv(config.preprocessed_csv, encoding='UTF-8')
 	df['ColumnA'] = df[df.columns[0:12]].apply(lambda x: ','.join(x.dropna()),axis=1)
 	
 	df['Lemmitize'] = df['ColumnA'].apply(rem_punt).apply(tokenize)
-	print("Lemmatization completed .. ")
+	logging.debug("Lemmatization completed .. ")
 	df['Lemmitize'] = df['Lemmitize'].apply(conversion)
 	df.to_csv(config.nlp_processed_csv,index=False, encoding = "utf-8")
 
@@ -135,7 +139,7 @@ def model_making_main(file):
 	model_making("SVM" , vect, model4, X_train, y_train, X_test, y_test)
 	model_making("Logistic Regression",vect, model5, X_train, y_train, X_test, y_test)
 	model_making("SGDClassifier",vect, model7, X_train, y_train, X_test, y_test)
-	print("Model making completed ...")
+	logging.debug("Model making completed ...")
 
 
 #model_making_main(config.raw_data_csv)
