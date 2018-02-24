@@ -3,7 +3,7 @@
 
 from MailAutomation import mail_reader
 from Prediction import prediction_main
-from mail_append import mail_append_main
+from MailAppend import mail_append_main
 import config
 import os
 import logging

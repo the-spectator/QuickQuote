@@ -11,7 +11,7 @@ from nltk import pos_tag
 from nltk.stem.wordnet import WordNetLemmatizer
 import re
 import pickle
-from Mail_Cleaner import mail_cleaner_main
+from MailCleaner import mail_cleaner_main
 from RegexProcessing import regex_processing_main
 from PreProcess import preprocess_main
 
