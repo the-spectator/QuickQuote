@@ -5,7 +5,9 @@ from PreProcess import preprocess_main
 from Model_Training import model_making_main
 from Mail_Cleaner import mail_cleaner_main
 import config
+import logging
 
+logging.basicConfig(filename="Data/logfile.log", level=logging.DEBUG)
 
 def model_maker_main():
 
@@ -14,6 +16,6 @@ def model_maker_main():
 	regex_processing_main(config.raw_data_csv)
 	preprocess_main(config.raw_data_csv)
 	model_making_main(config.raw_data_csv)
-	print("Completed ...")
+	logging.debug("Completed ...")
 
 model_maker_main()

@@ -6,14 +6,18 @@ import codecs
 import re
 from datetime import datetime
 import config
+import logging
 
+logging.basicConfig(filename="Data/logfile.log", level=logging.DEBUG)
+
+'''
 try:
 	from search_term import give_med_terms
 except:
 	from QuickUMLS.search_term import give_med_terms
 
 
-'''
+
 REGULAR EXPRESSIONS DEFINITIONS
 '''
 
@@ -380,7 +384,7 @@ def reg(st, i, data, wtr):
 
 
 		# medical data
-		data[i][11] = give_med_terms(line)
+		#data[i][11] = give_med_terms(line)
 	data[i][13] = st
 	wtr.writerows(data)
 
@@ -392,11 +396,11 @@ def preprocess():
 
 
 def regex_processing_main(file):
-	print('\nRegex Processing starting ... ')
+	logging.debug('\nRegex Processing starting ... ')
 	data = preprocess()
 	st = []
 	i = 0
-	print('Opening Raw Data File')
+	logging.debug('Opening Raw Data File')
 
 	out = open(config.regex_processed_csv, 'w', newline='')
 	wtr = csv.writer(out)
@@ -413,6 +417,6 @@ def regex_processing_main(file):
 			st = []
 
 	out.close()
-	print('Regex Processing Completed.. \n ')
+	logging.debug('Regex Processing Completed.. \n ')
 
 # regex_processing_main(config.raw_data_csv)

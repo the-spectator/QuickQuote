@@ -4,7 +4,9 @@ import pandas as pd
 import numpy as np
 import re
 import config
+import logging
 
+logging.basicConfig(filename="Data/logfile.log", level=logging.DEBUG)
 
 def changeFace(ans):
     
@@ -40,7 +42,7 @@ def emailfirst(doc):
 		doc = ""
 		return doc
 def preprocess_main(file):
-	print("\nPre processing starting .. ")
+	logging.debug("Pre processing starting .. ")
 	df = pd.read_csv(config.regex_processed_csv, encoding='UTF-8')
 	df = df.iloc[1:]
 	df = df.drop(columns=['Year_of_birth'])
@@ -50,11 +52,11 @@ def preprocess_main(file):
 	of['Senderemail'] = of['Senderemail'].apply(emailfirst)
 	df['Senderemail'] = of['Senderemail'].values
 	df['Weight'] = df['Weight'].apply(changeWt)
-	print("Weight updation completed.. ")
+	logging.debug("Weight updation completed.. ")
 	df['Face Amount'] = df['Face Amount'].apply(changeFace)
-	print("Face amount updation completed ... ")
+	logging.debug("Face amount updation completed ... ")
 
 	df.to_csv(config.preprocessed_csv,index=False, encoding = "utf-8")
-	print("Pre processing completed ...")
+	logging.debug("Pre processing completed ...")
 	
 # preprocess_main(config.raw_data_csv)
