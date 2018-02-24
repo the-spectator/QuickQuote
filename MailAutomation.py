@@ -121,7 +121,7 @@ def mail_reader(folder, flags, new_flags):
         from_ = str(envelope.from_[0])
         to = str(envelope.to[0])
         row = {'ID': msgid, 'MessageID': message_id, 'Subject': subject, 'Senderemail': from_,
-               'recepientemail': to, 'SentOn': date, 'ReceivedOn': date, 'Offer': None, 'Contents': content}
+               'recepientemail': to, 'SentOn': date, 'ReceivedOn': date, 'Offer_noise_free': None, 'Contents': content}
         data_dict.append(row)
     print('>> EmailData Fetched ....')
     # Writing data to csv

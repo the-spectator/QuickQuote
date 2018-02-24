@@ -110,7 +110,7 @@ def model_making_main(file):
  
 	X = df['Lemmitize']
 	of = pd.read_csv(file, encoding='UTF-8')	
-	y = of['Offer']
+	y = of['Offer_noise_free']
 	
 	X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.2,random_state=4)
 	vect = TfidfVectorizer(max_df=0.5, max_features=10000, min_df=1, use_idf=True , ngram_range=(1,2) , lowercase = True)

@@ -56,7 +56,7 @@ def append_mail(doc, server, folder, new_flags):
     email_to = give_email_address([doc['Senderemail']])
     email_from = give_email_address([config.email_from])
     email_subject = 'Re:' + doc['Subject']
-    result = doc['Offer']
+    result = doc['Offer_noise_free']
     email_template = read_template()
     email_content = email_template.format(product_=result,from_=doc['Senderemail'],subject_=doc['Subject'],sendon_=doc['SentOn'],content_=doc['Contents'])
     mail = create_email(email_to, email_subject, email_from, email_content)

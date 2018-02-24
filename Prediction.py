@@ -78,7 +78,7 @@ def prediction_main(file):
 	df = pd.read_csv(config.enlp_processed_csv)
 	df['result'] = df['Lemmitize'].apply(PredictionModule)
 	of = pd.read_csv(config.eraw_data_csv, encoding = 'utf-8')
-	of['Offer'] = df['result']
+	of['Offer_noise_free'] = df['result']
 	df.to_csv(config.enlp_processed_csv,index=False, encoding = "utf-8")
 	of.to_csv(config.eraw_data_csv,index=False, encoding = "utf-8")
 
