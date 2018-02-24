@@ -396,7 +396,7 @@ def preprocess():
 
 
 def regex_processing_main(file):
-	logging.debug('\nRegex Processing starting ... ')
+	logging.debug('Regex Processing starting ... ')
 	data = preprocess()
 	st = []
 	i = 0

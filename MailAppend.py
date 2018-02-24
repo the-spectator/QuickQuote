@@ -12,7 +12,8 @@ import os
 import logging
 
 logging.basicConfig(filename=config.log_file, level=logging.DEBUG)
-
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 def give_email_address(addresses):
     parts = email.utils.getaddresses(addresses)
@@ -76,12 +77,12 @@ def login():
 
 
 def mail_append_main():
-    logging.debug('MailAppend started')
+    logger.debug('MailAppend started')
     server = login()
     df = pd.read_csv(config.eraw_data_csv, encoding='utf8')
     empty_predicted_mails()
     df.apply(append_mail, args=(server, config.append_box, []), axis=1)
     server.logout()
-    logging.debug('MailAppend Ended')
+    logger.debug('MailAppend Ended')
 
 # mail_append_main()
