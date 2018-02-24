@@ -378,11 +378,10 @@ def reg(st, i, data, wtr):
 			# Write else outsite condition (to stop rewriting of above cell)
 			data[i][10] = ""
 
+
+		# medical data
+		data[i][11] = give_med_terms(line)
 	data[i][13] = st
-
-	# medical data
-	data[i][11] = give_med_terms(line)
-
 	wtr.writerows(data)
 
 
