@@ -8,7 +8,7 @@ import config
 import os
 import logging
 
-logging.basicConfig(filename=config.log_file, level=logging.INFO)
+logging.basicConfig(filename=config.log_file, level=logging.WARNING)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 

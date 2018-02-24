@@ -13,7 +13,7 @@ import collections
 import config
 import logging
 
-logging.basicConfig(filename=config.log_file, level=logging.INFO)
+logging.basicConfig(filename=config.log_file, level=logging.WARNING)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
@@ -103,9 +103,9 @@ def mail_reader(folder, flags, new_flags):
     messages = server.search(flags)
 
     # Filter the already predicted unread emails
-    logger.debug('Orignal Unread Mails ',messages)
+    logger.debug(f'Orignal Unread Mails {messages}')
     messages = filter_predicted(server, messages)
-    logger.debug('Filtered Uread Mails ',messages)
+    logger.debug(f'Filtered Uread Mails {messages}')
 
     # get_flags method gives the flags(Unseen or Seen) for each message
     # logger.debug(server.get_flags(messages))
@@ -142,7 +142,7 @@ def mail_reader(folder, flags, new_flags):
 # For getting all unread emails from inbox
 # mail_reader('INBOX',['SEEN'],[b'\\SEEN'])
 
-mail_reader('INBOX', ['UNSEEN'], [])
+# mail_reader('INBOX', ['UNSEEN'], [])
 
 # For getting all emails from sentbox
 # mail_reader('SENT',['ALL'])
