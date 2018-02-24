@@ -4,6 +4,7 @@ from imapclient import IMAPClient
 from secrets import EMAIL, PASSWORD
 from email.message import EmailMessage
 from email.headerregistry import Address
+from MailLogin import login
 import email.utils
 import pandas as pd
 import config
@@ -68,12 +69,6 @@ def append_mail(doc, server, folder, new_flags):
     server.append(folder, mail, flags=(new_flags), msg_time=None)
     mark_predicted(doc['ID'], doc['MessageID'])
     pass
-
-
-def login():
-    server = IMAPClient(config.imap_server, use_uid=True, ssl=True)
-    server.login(EMAIL, PASSWORD)
-    return server
 
 
 def mail_append_main():

@@ -5,8 +5,9 @@ from secrets import EMAIL, PASSWORD
 from email import message_from_string
 from email.message import EmailMessage
 from email.headerregistry import Address
+from MailLogin import login
 import lxml.html
-import csv
+import re
 import os
 import pandas as pd
 import collections
@@ -22,8 +23,7 @@ def clean(data):
     # every other thing is pretty self explanatory
     doc = lxml.html.document_fromstring(data)
     newdata = doc.text_content().encode('utf8').decode('utf8').strip()
-    if (newdata[:42] == '<!-- P {margin-top:0;margin-bottom:0;} -->'):
-        newdata = newdata[44:]
+    newdata = re.sub(r'<!--.+?-->', '', newdata,flags= re.DOTALL)
     return newdata.strip()
 
 
@@ -71,11 +71,6 @@ def write_to_csv(filename, data_dict):
     file_exists = os.path.isfile(filename)
     ordered_dict = [collections.OrderedDict(x) for x in data_dict]
     df = pd.DataFrame(ordered_dict)
-    # if not file_exists or os.stat(filename).st_size == 0:
-    #     df.to_csv(filename, header=True, index=False, encoding='utf-8')
-    # else:
-    #     df.to_csv(filename, mode='a', index=False,
-    #               header=False, encoding='utf-8')
     df.to_csv(filename, header=True, index=False, encoding='utf-8')
 
 
@@ -92,10 +87,7 @@ def filter_predicted(server, unread):
 
 def mail_reader(folder, flags, new_flags):
     logger.debug('MailReader started ...')
-    logger.debug('Establishing Connections ....')
-    server = IMAPClient(config.imap_server, use_uid=True, ssl=True)
-    server.login(EMAIL, PASSWORD)
-    logger.debug('Connection Established ....')
+    server = login()
     # Selecting the inbox folder
     message_box = server.select_folder(folder)
 
@@ -142,7 +134,7 @@ def mail_reader(folder, flags, new_flags):
 # For getting all unread emails from inbox
 # mail_reader('INBOX',['SEEN'],[b'\\SEEN'])
 
-# mail_reader('INBOX', ['UNSEEN'], [])
+mail_reader('INBOX', ['UNSEEN'], [])
 
 # For getting all emails from sentbox
 # mail_reader('SENT',['ALL'])
