@@ -11,10 +11,14 @@ from nltk import pos_tag
 from nltk.stem.wordnet import WordNetLemmatizer
 import re
 import pickle
-from Mail_Cleaner import mail_cleaner_main
+from MailCleaner import mail_cleaner_main
 from RegexProcessing import regex_processing_main
 from PreProcess import preprocess_main
+import logging
 
+logging.basicConfig(filename=config.log_file, level=logging.WARNING)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 # Removes all punctuations which acts as noise
 def rem_punt(doc):
@@ -30,7 +34,7 @@ def tokenize(document):
     stop_word = set(stopwords.words('english'))
     for sent in sent_tokenize(document):
         for token, tag in pos_tag(wordpunct_tokenize(sent)):
-            # print(token,tag)
+            # logger.debug(token,tag)
             if token in stop_word:
                  continue
             lemma = lemmatize(token, tag)
@@ -59,26 +63,36 @@ def PredictionModule(doc):
 
 
 def prediction_main(file):
-	print('Mail cleaning starting .  ')
+	logger.info('>> Start Mail cleaning')
 	mail_cleaner_main(file)
-	print('Mail cleaning complete .')
-	print('Regex Processing starting')
+	
+	logger.info('>> Start Regex Processing')
 	regex_processing_main(file)
-	print('Regex complete')
+
+	logger.info('>> Start PreProcess')
 	preprocess_main(file)
 
 	df = pd.read_csv(config.preprocessed_csv, encoding='UTF-8')
 	df['Contents'] = df[df.columns[0:12]].apply(
 	    lambda x: ','.join(x.dropna().astype(str)), axis=1)
+	logger.debug(f"Contents= {[i for i in df['Contents']]}")
 
+	logger.info('>> Start tokenize and remove punctuations')
 	df['Lemmitize'] = df['Contents'].apply(rem_punt).apply(tokenize)
+	logger.debug(f"Features= {[i for i in df['Lemmitize']]}")
 
 	df.to_csv(config.enlp_processed_csv, index=False, encoding="utf-8")
 	# change when merged with email raw data
 	df = pd.read_csv(config.enlp_processed_csv)
+
+	logger.info('>> Start Prediction')
 	df['result'] = df['Lemmitize'].apply(PredictionModule)
+	logger.debug(f"Offer= {df['result']}")
+
 	of = pd.read_csv(config.eraw_data_csv, encoding = 'utf-8')
 	of['Offer_noise_free'] = df['result']
+	
+
 	df.to_csv(config.enlp_processed_csv,index=False, encoding = "utf-8")
 	of.to_csv(config.eraw_data_csv,index=False, encoding = "utf-8")
 

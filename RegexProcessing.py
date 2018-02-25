@@ -8,7 +8,7 @@ from datetime import datetime
 import config
 import logging
 
-logging.basicConfig(filename="Data/logfile.log", level=logging.DEBUG)
+logging.basicConfig(filename=config.log_file, level=logging.DEBUG)
 
 
 try:
@@ -396,7 +396,7 @@ def preprocess():
 
 
 def regex_processing_main(file):
-	logging.debug('\nRegex Processing starting ... ')
+	logging.debug('Regex Processing starting ... ')
 	data = preprocess()
 	st = []
 	i = 0
