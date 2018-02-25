@@ -1,4 +1,5 @@
 import pandas as pd
+import re
 
 
 def genderRegex(doc):
@@ -31,7 +32,7 @@ def medicalTerms(doc):
 def regexmain(file):
 	df = pd.read_csv(file, encoding='UTF-8')
 	df['Gender'] = df['Contents'].apply(genderRegex)
-	df['Year_of_Birth'] = df['COntents'].apply(yearRegex)
+	df['Year_of_Birth'] = df['Contents'].apply(yearRegex)
 	df['Age(years)'] = df['Contents'].apply(ageRegex)
 	df['Product Type'] = df['Contents'].apply(productRegex)
 	df['Face Amount'] = df['Contents'].apply(weightRegex)
