@@ -8,8 +8,16 @@ import config
 import os
 import logging
 
+# Log configuration and initialization
 logger = logging.getLogger('QQ')
-
+logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+fileHandler = logging.FileHandler('logs/QQ-logs.log')
+fileHandler.setFormatter(formatter)
+logger.addHandler(fileHandler)
+consoleHandler = logging.StreamHandler()
+consoleHandler.setFormatter(formatter)
+logger.addHandler(consoleHandler)
 
 def prediction_maker_main():
 	logger.info(">> Start - Predection maker")

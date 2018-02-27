@@ -129,7 +129,7 @@ def productRegex(line):
 		ans=(final_str)
 	else:
 		ans=""
-	return ans
+	return ans.strip()
 
 def weightRegex(line):
 	ans=""

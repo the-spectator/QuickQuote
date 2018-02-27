@@ -50,8 +50,6 @@ def preprocess_main(file):
 	# df = df.iloc[1:]
 	df = df.drop(columns=['Year_of_Birth'])
 	of = pd.read_csv(file, encoding='UTF-8')
-	# print('of',len(of['Senderemail']))
-	# print('df',len(df['Senderemail']))
 	of['recepientemail'] = of['recepientemail'].apply(emailfirst)
 	df['recepientemail'] = of['recepientemail'].values
 
