@@ -48,20 +48,17 @@ def get_decoded_email_body(message_body):
             charset = part.get_content_charset()
 
             if part.get_content_type() == 'text/plain':
-                text = str(part.get_payload(decode=True), str(
-                    charset), "ignore").encode('utf8', 'replace')
+                text = str(part.get_payload(decode=True), str(charset), "ignore").encode('utf8', 'replace')
 
             if part.get_content_type() == 'text/html':
-                html = str(part.get_payload(decode=True), str(
-                    charset), "ignore").encode('utf8', 'replace')
+                html = str(part.get_payload(decode=True), str(charset), "ignore").encode('utf8', 'replace')
 
         if text is not None:
             return text.strip()
         else:
             return html.strip()
     else:
-        text = str(msg.get_payload(decode=True),
-                   msg.get_content_charset(), 'ignore').encode('utf8', 'replace')
+        text = str(msg.get_payload(decode=True),msg.get_content_charset(), 'ignore').encode('utf8', 'replace')
         return text.strip()
 
 
@@ -75,12 +72,18 @@ def write_to_csv(filename, data_dict):
 def filter_predicted(server, unread):
     df = pd.read_csv(config.predicted_csv, encoding='utf-8')
     fetch = server.fetch(unread, ['ENVELOPE'])
-    new_unread = []
+    new_unread,unread_ids = [], []
     for msgid, data in fetch.items():
         envelope = data[b'ENVELOPE']
         message_id = envelope.message_id.decode('utf8')
-        if len(df[df['MessageID'] == message_id]) == 0 :
+        unread_ids.append(message_id)
+        # if len(df[df['MessageID'] == message_id]) == 0 :
+        if message_id not in df['MessageID']:
             new_unread.append(msgid)
+    for i in df['MessageID']:
+    	if i not in unread_ids:
+    		df.query(f'MessageID != {i}', inplace = True)
+    df.to_csv(config.predicted_csv, header = True, index = False, encoding = 'utf-8')
     return new_unread
 
 def mail_reader(folder, flags, new_flags):

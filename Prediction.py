@@ -75,11 +75,12 @@ def prediction_main(file):
 
 	logger.debug('Read CSV' + config.preprocessed_csv)
 	df = pd.read_csv(config.preprocessed_csv, encoding='UTF-8')
-	df['Contents'] = df[df.columns[0:12]].apply(lambda x: ','.join(x.dropna().astype(str)), axis=1)
-	logger.debug(f"Contents= {[i for i in df['Contents']]}")
+	select_columns = ['recepientemail','Gender','Age(years)','Product Type','Weight','Height','Habit','Face Amount','Medication','Property','Medical Data','Family']
+	df['ColumnA'] = df[select_columns].apply(lambda x: ','.join(x.dropna().astype(str)), axis=1)
+	logger.debug(f"Contents= {[i for i in df['ColumnA']]}")
 
 	logger.info('>> Start tokenize and remove punctuations')
-	df['Lemmitize'] = df['Contents'].apply(rem_punt).apply(tokenize)
+	df['Lemmitize'] = df['ColumnA'].apply(rem_punt).apply(tokenize)
 	logger.debug(f"Features= {[i for i in df['Lemmitize']]}")
 
 	df.to_csv(config.enlp_processed_csv, index=False, encoding="utf-8")

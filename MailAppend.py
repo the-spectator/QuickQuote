@@ -42,9 +42,6 @@ def read_template():
 	return email_template
 
 
-def empty_predicted_mails():
-	open(config.predicted_csv, encoding='utf-8', mode='w').close()
-
 # Marking the predicted emails
 
 
@@ -66,8 +63,8 @@ def append_mail(doc, server, folder, new_flags):
 	email_subject = 'Re:' + doc['Subject']
 	result = doc['Offer_noise_free']
 	email_template = read_template()
-	email_content = email_template.format(product_=result, from_=doc['Senderemail'], subject_=doc[
-										  'Subject'], sendon_=doc['SentOn'], content_=doc['Contents'])
+	email_content = email_template.format(product_=result, from_=doc['Senderemail'], 
+										  subject_=doc['Subject'], sendon_=doc['SentOn'], content_=doc['Contents'])
 	mail = create_email(email_to, email_subject, email_from, email_content)
 	server.append(folder, mail, flags=(new_flags), msg_time=None)
 	mark_predicted(doc['ID'], doc['MessageID'])
@@ -78,7 +75,6 @@ def mail_append_main():
 	logger.info('>> Start - Mail Append')
 	server = login()
 	df = pd.read_csv(config.eraw_data_csv, encoding='utf8')
-	# empty_predicted_mails()
 	df.apply(append_mail, args=(server, config.append_box, []), axis=1)
 	server.logout()
 	logger.info('<< End - Mail Append')
