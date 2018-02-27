@@ -66,6 +66,7 @@ lives = r'(.*)?(\b[Ll]ives)\s?(.*)?'
 prop = r'(.*)?(\b[Pp]roperty)\s?(.*)?'
 
 def genderRegex(line):
+	ans=" "
 	gender = r'(\b[Mm]ale?)|(\b[Ff]emale?)|(\bFEMALE)|(\bMALE)|(/b)|F/|M/'
 	#for line in st:
 	y = re.search(gender, line, re.I | re.U)
@@ -85,6 +86,7 @@ def genderRegex(line):
 	return ans.lower()
 
 def yearRegex(line):
+	ans=" "
 	num = re.search(number, line, re.I | re.U)
 	x = re.search(Date, line, re.I | re.U)
 	ans = 0
@@ -108,6 +110,7 @@ def yearRegex(line):
 	return ans
 
 def productRegex(line):
+	ans=" "
 	z=re.search(product_type, line, re.I | re.U)
 	perm_reg = re.search(permanent, line, re.I | re.U)
 	term_type_reg = re.search(term, line, re.I | re.U)
@@ -125,49 +128,32 @@ def productRegex(line):
 	return ans
 
 def weightRegex(line):
-	x=re.search(weight_num, line, re.I | re.U) 
-	wt=re.search(weight, line, re.I | re.U)
-	if(x): 
-		#print (x.group(0)+"\n")
-		ans=(x.group(0))
-	elif(wt):
-		am = re.search(weight_num,wt.group(0), re.I | re.U)
-		if(am):
-			ans=(am.group(0))
-	else:
-		ans=" "
-	
+	ans=" "
 	#Preferred Height & Weight
 	pr = ''
 	pr = re.search(preferred, line, re.I | re.U)
 	if(pr!='' and pr):
-		h_reg = re.search(height_word, pr.group(0), re.I | re.U)
-		if(h_reg):
-			ans = "5 Feet 9 Inches"
 		w_reg = re.search(weight_word, pr.group(0), re.I | re.U)
 		if(w_reg):
 			ans = "196 lbs"
 			return ans
+	else:
+		x=re.search(weight_num, line, re.I | re.U) 
+		wt=re.search(weight, line, re.I | re.U)
+		if(x): 
+			#print (x.group(0)+"\n")
+			ans=(x.group(0))
+		elif(wt):
+			am = re.search(weight_num,wt.group(0), re.I | re.U)
+			if(am):
+				ans=(am.group(0))
+		else:
+			ans=" "
+		
 	return ans
 
 def heightRegex(line):
-	ht = re.search(height1, line, re.I | re.U)
-	htsym = re.search(height2, line, re.I | re.U)
-	if(ht): 
-		#print (ht.group(0)+"\n")
-		ans=(ht.group(0))
-	elif(htsym):
-		f = re.search(feet, (htsym.group(0)), re.I | re.U)
-		inch = re.search(inches, (htsym.group(0)), re.I | re.U)
-		if(f):
-			#print(f.group(0))
-			am = re.search(height_num, (f.group(0)), re.I | re.U).group(0) + ' Feet'
-			if(inch):
-				am+=re.search(height_num, (inch.group(0)), re.I | re.U).group(0) + ' Inches' 
-			ans=am
-	else:
-		ans=" "
-	
+	ans=" "
 	#Preferred Height & Weight
 	pr = ''
 	pr = re.search(preferred, line, re.I | re.U)
@@ -175,13 +161,28 @@ def heightRegex(line):
 		h_reg = re.search(height_word, pr.group(0), re.I | re.U)
 		if(h_reg):
 			ans = "5 Feet 9 Inches"
-		w_reg = re.search(weight_word, pr.group(0), re.I | re.U)
-		if(w_reg):
-			ans = "196 lbs"
 			return ans
+	else:
+		ht = re.search(height1, line, re.I | re.U)
+		htsym = re.search(height2, line, re.I | re.U)
+		if(ht): 
+			#print (ht.group(0)+"\n")
+			ans=(ht.group(0))
+		elif(htsym):
+			f = re.search(feet, (htsym.group(0)), re.I | re.U)
+			inch = re.search(inches, (htsym.group(0)), re.I | re.U)
+			if(f):
+				#print(f.group(0))
+				am = re.search(height_num, (f.group(0)), re.I | re.U).group(0) + ' Feet'
+				if(inch):
+					am+=re.search(height_num, (inch.group(0)), re.I | re.U).group(0) + ' Inches' 
+				ans=am
+		else:
+			ans=" "
 	return ans
 
 def ageRegex(df):
+	ans=" "
 	if(df['Year_of_Birth']):
 		print(df['Year_of_Birth'])
 	line=df['Contents']
@@ -239,6 +240,7 @@ def ageRegex(df):
 	return ans
 
 def habitRegex(line):
+	ans=" "
 	sm = re.search(smoker, line, re.I | re.U)
 	tob = re.search(tobacco, line, re.I | re.U)
 	if(sm): 
@@ -255,7 +257,9 @@ def habitRegex(line):
 	else:
 		ans=" "
 	return ans
+	
 def faceamountRegex(line):
+	ans=" "
 	w = re.search(faceamount, line	, re.I | re.U)
 	term_reg = re.search(termamount, line, re.I | re.U)
 	seek_reg = re.search(seeking, line, re.I | re.U)
@@ -338,6 +342,7 @@ def faceamountRegex(line):
 	
 def medicationRegex(line):
 	#Medication & Treatment
+	ans=" "
 	med_reg = (re.search(med,line, re.I | re.U))
 	ans = ""
 	if(med_reg):
@@ -362,6 +367,7 @@ def propertyRegex(line):
 
 def propertyRegex(line):
 	#Family
+	ans=" "
 	family_reg = (re.search(family,line, re.I | re.U))
 	family_member_reg = (re.search(family_member,line, re.I | re.U))
 	if(family_reg):
