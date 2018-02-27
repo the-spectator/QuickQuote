@@ -5,29 +5,38 @@ import re
 def genderRegex(doc):
 	return ans
 
+
 def yearRegex(doc):
 	return ans
+
 
 def productRegex(doc):
 	return ans
 
+
 def weightRegex(doc):
 	return ans
+
 
 def ageRegex(doc):
 	return ans
 
+
 def habitRegex(doc):
 	return ans
+
 
 def medicationRegex(doc):
 	return ans
 
+
 def propertyRegex(doc):
 	return ans
 
+
 def medicalTerms(doc):
 	return search_med_terms(doc)
+
 
 def regexmain(file):
 	df = pd.read_csv(file, encoding='UTF-8')
@@ -41,5 +50,3 @@ def regexmain(file):
 	df['Medication'] = df['Contents'].apply(medicationRegex)
 	df['Property'] = df['Contents'].apply(propertyRegex)
 	df['Medical Data'] = df['Contents'].apply(medicalTerms)
-	
-	

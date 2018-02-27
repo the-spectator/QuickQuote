@@ -1,0 +1,72 @@
+2018-02-27 12:47:19,499 INFO >> Start - Model Maker
+2018-02-27 12:47:19,499 INFO >> Start - Model making
+2018-02-27 12:50:53,696 INFO >> Start - Model Maker
+2018-02-27 12:50:53,696 INFO >> Start - Mail Cleaning - Remove signature, Offer Standardize etc
+2018-02-27 12:50:53,775 INFO << End - Mail Cleaning
+2018-02-27 12:50:53,775 INFO >> Start - Feature extractions using
+2018-02-27 12:50:53,775 DEBUG Opening Raw Data File - Data/regexProcessed.csv
+2018-02-27 12:50:54,067 INFO >> End - Feature extractions using
+2018-02-27 12:50:54,068 INFO >> Start - Preprocessing. Standardize Face amount, Weight... etc
+2018-02-27 12:50:54,068 DEBUG Opening -Data/regexProcessed.csv
+2018-02-27 12:50:54,088 INFO Standardize Weight
+2018-02-27 12:50:54,089 INFO Standardize Face amount
+2018-02-27 12:50:54,091 INFO << End - Preprocess
+2018-02-27 12:50:54,091 INFO >> Start - Model making
+2018-02-27 12:50:56,510 DEBUG Random Forest               25.000               0.176                        0.102s 
+ 
+2018-02-27 12:50:56,517 DEBUG SVM                         25.000               0.003                        0.001s 
+ 
+2018-02-27 12:50:56,915 DEBUG Logistic Regression         0.000                0.389                        0.002s 
+ 
+2018-02-27 12:50:56,959 DEBUG SGDClassifier               0.000                0.037                        0.002s 
+ 
+2018-02-27 12:50:56,959 INFO << End - Model making
+2018-02-27 12:50:56,959 INFO << End - Model Maker
+2018-02-27 12:51:08,140 INFO >> Start - Model Maker
+2018-02-27 12:51:08,140 INFO >> Start - Mail Cleaning - Remove signature, Offer Standardize etc
+2018-02-27 12:51:08,187 INFO << End - Mail Cleaning
+2018-02-27 12:51:08,188 INFO >> Start - Feature extractions using
+2018-02-27 12:51:08,188 DEBUG Opening Raw Data File - Data/regexProcessed.csv
+2018-02-27 12:51:08,489 INFO >> End - Feature extractions using
+2018-02-27 12:51:08,489 INFO >> Start - Preprocessing. Standardize Face amount, Weight... etc
+2018-02-27 12:51:08,489 DEBUG Opening -Data/regexProcessed.csv
+2018-02-27 12:51:08,495 INFO Standardize Weight
+2018-02-27 12:51:08,496 INFO Standardize Face amount
+2018-02-27 12:51:08,498 INFO << End - Preprocess
+2018-02-27 12:51:08,498 INFO >> Start - Model making
+2018-02-27 12:51:10,727 DEBUG Random Forest               25.000               0.151                        0.102s 
+ 
+2018-02-27 12:51:10,735 DEBUG SVM                         25.000               0.003                        0.001s 
+ 
+2018-02-27 12:51:10,748 DEBUG Logistic Regression         0.000                0.010                        0.001s 
+ 
+2018-02-27 12:51:10,757 DEBUG SGDClassifier               0.000                0.004                        0.001s 
+ 
+2018-02-27 12:51:10,757 INFO << End - Model making
+2018-02-27 12:51:10,757 INFO << End - Model Maker
+2018-02-27 12:52:57,201 INFO >> Start - Model Maker
+2018-02-27 12:52:57,201 INFO >> Start - Mail Cleaning - Remove signature, Offer Standardize etc
+2018-02-27 12:52:57,250 INFO << End - Mail Cleaning
+2018-02-27 12:52:57,250 INFO >> Start - Feature extractions using
+2018-02-27 12:52:57,250 DEBUG Opening Raw Data File - Data/regexProcessed.csv
+2018-02-27 12:52:57,552 INFO >> End - Feature extractions using
+2018-02-27 12:52:57,553 INFO >> Start - Preprocessing. Standardize Face amount, Weight... etc
+2018-02-27 12:52:57,553 DEBUG Opening -Data/regexProcessed.csv
+2018-02-27 12:52:57,559 INFO Standardize Weight
+2018-02-27 12:52:57,560 INFO Standardize Face amount
+2018-02-27 12:52:57,562 INFO << End - Preprocess
+2018-02-27 12:52:57,562 INFO >> Start - Model making
+2018-02-27 12:52:59,443 INFO >> Start - Model training Random Forest
+2018-02-27 12:52:59,875 DEBUG Random Forest               25.000               0.152                        0.102s 
+ 
+2018-02-27 12:52:59,875 INFO >> Start - Model training SVM
+2018-02-27 12:52:59,881 DEBUG SVM                         25.000               0.003                        0.001s 
+ 
+2018-02-27 12:52:59,882 INFO >> Start - Model training Logistic Regression
+2018-02-27 12:52:59,894 DEBUG Logistic Regression         0.000                0.010                        0.001s 
+ 
+2018-02-27 12:52:59,894 INFO >> Start - Model training SGDClassifier
+2018-02-27 12:52:59,901 DEBUG SGDClassifier               0.000                0.004                        0.001s 
+ 
+2018-02-27 12:52:59,901 INFO << End - Model making
+2018-02-27 12:52:59,901 INFO << End - Model Maker

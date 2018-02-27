@@ -8,18 +8,16 @@ from datetime import datetime
 import config
 import logging
 
-logging.basicConfig(filename=config.log_file, level=logging.DEBUG)
-
-
+'''
 try:
 	from search_term import give_med_terms
 except:
 	from QuickUMLS.search_term import give_med_terms
 
-
-'''
 REGULAR EXPRESSIONS DEFINITIONS
 '''
+
+logger = logging.getLogger('QQ')
 
 number = r'\d{2,3}'
 gender = r'(\b[Mm]ale?)|(\b[Ff]emale?)|(\bFEMALE)|(\bMALE)|(/b)|F/|M/'
@@ -111,7 +109,7 @@ def reg(st, i, data, wtr):
 				data[i][1] = x1.group(0)
 			elif(x2):
 				z = x2.group(0)
-				data[i][1] = '19'+z
+				data[i][1] = '19' + z
 		elif(x1):
 			x1 = re.search(year_four_digit, line, re.I | re.U)
 
@@ -134,19 +132,19 @@ def reg(st, i, data, wtr):
 
 			currentYear = datetime.now().year
 
-			data[i][2] = ((currentYear-(int)(x1.group(0))))
+			data[i][2] = ((currentYear - (int)(x1.group(0))))
 
 		else:
 			if(x1 and dob):  # DOB 20/03/1996
 
 				currentYear = datetime.now().year
 
-				data[i][2] = ((currentYear-(int)(x1.group(0))))
+				data[i][2] = ((currentYear - (int)(x1.group(0))))
 			elif(x1 and y):  # Male 20/03/1996
 
 				currentYear = datetime.now().year
 
-				data[i][2] = ((currentYear-(int)(x1.group(0))))
+				data[i][2] = ((currentYear - (int)(x1.group(0))))
 
 			else:
 				data[i][2] = ' '
@@ -167,7 +165,7 @@ def reg(st, i, data, wtr):
 
 			if((data[i][2] < '18') and data[i][1] != " "):  # From Year of Birth
 				currentYear = datetime.now().year
-				data[i][2] = (currentYear-(int)(data[i][1]))
+				data[i][2] = (currentYear - (int)(data[i][1]))
 
 	# Product Type
 		z = re.search(product_type, line, re.I | re.U)
@@ -195,7 +193,7 @@ def reg(st, i, data, wtr):
 			if(k):
 				nn = re.search(num_conv, w.group(0), re.I | re.U)
 				if(nn):
-					data[i][4] = 'Face Amount: $'+((nn.group(0))+',000')
+					data[i][4] = 'Face Amount: $' + ((nn.group(0)) + ',000')
 			else:
 				data[i][4] = (w.group(0))
 
@@ -211,17 +209,17 @@ def reg(st, i, data, wtr):
 				m = re.search(m_conv, amd.group(0), re.I | re.U)
 				if(k):
 					nn = re.search(num_conv, amd.group(0), re.I | re.U)
-					data[i][4] = 'Face Amount: '+((nn.group(0))+',000')
+					data[i][4] = 'Face Amount: ' + ((nn.group(0)) + ',000')
 				elif(m):
 					nn = re.search(num_conv, amd.group(0), re.I | re.U)
-					data[i][4] = 'Face Amount: '+((nn.group(0))+',000,000')
+					data[i][4] = 'Face Amount: ' + ((nn.group(0)) + ',000,000')
 				else:
-					data[i][4] = 'Face Amount: '+amd.group(0)
+					data[i][4] = 'Face Amount: ' + amd.group(0)
 			elif(amwd):
 				term_year_reg = re.search(
 					term_year, amwd.group(0), re.I | re.U)
 				if(term_year_reg):
-					data[i][4] = 'Term Year: '+(amwd.group(0))
+					data[i][4] = 'Term Year: ' + (amwd.group(0))
 				else:
 
 					#data[i][4]='Face Amount: $'+(amwd.group(0))
@@ -229,13 +227,14 @@ def reg(st, i, data, wtr):
 					m = re.search(m_conv, amwd.group(0), re.I | re.U)
 					if(k):
 						nn = re.search(num_conv, amwd.group(0), re.I | re.U)
-						data[i][4] = 'Face Amount: $'+((nn.group(0))+',000')
+						data[i][4] = 'Face Amount: $' + \
+							((nn.group(0)) + ',000')
 					elif(m):
 						nn = re.search(num_conv, amwd.group(0), re.I | re.U)
 						data[i][4] = 'Face Amount: $' + \
-							((nn.group(0))+',000,000')
+							((nn.group(0)) + ',000,000')
 					else:
-						data[i][4] = 'Face Amount: $'+amwd.group(0)
+						data[i][4] = 'Face Amount: $' + amwd.group(0)
 	# With Seeking
 		elif(seek_reg):
 			amd = re.search(amount_with_dollar, seek_reg.group(0), re.I | re.U)
@@ -249,30 +248,31 @@ def reg(st, i, data, wtr):
 				m = re.search(m_conv, amd.group(0), re.I | re.U)
 				if(k):
 					nn = re.search(num_conv, amd.group(0), re.I | re.U)
-					data[i][4] = 'Face Amount: '+((nn.group(0))+',000')
+					data[i][4] = 'Face Amount: ' + ((nn.group(0)) + ',000')
 				elif(m):
 					nn = re.search(num_conv, amd.group(0), re.I | re.U)
-					data[i][4] = 'Face Amount: '+((nn.group(0))+',000,000')
+					data[i][4] = 'Face Amount: ' + ((nn.group(0)) + ',000,000')
 				else:
-					data[i][4] = 'Face Amount: '+amd.group(0)
+					data[i][4] = 'Face Amount: ' + amd.group(0)
 			elif(amwd):
 				term_year_reg = re.search(
 					term_year, amwd.group(0), re.I | re.U)
 				if(term_year_reg):
-					data[i][4] = 'Term Year: '+(amwd.group(0))
+					data[i][4] = 'Term Year: ' + (amwd.group(0))
 				else:
 					#data[i][4]='Face Amount: $'+(amwd.group(0))
 					k = re.search(k_conv, amwd.group(0), re.I | re.U)
 					m = re.search(m_conv, amwd.group(0), re.I | re.U)
 					if(k):
 						nn = re.search(num_conv, amwd.group(0), re.I | re.U)
-						data[i][4] = 'Face Amount: $'+((nn.group(0))+',000')
+						data[i][4] = 'Face Amount: $' + \
+							((nn.group(0)) + ',000')
 					elif(m):
 						nn = re.search(num_conv, amwd.group(0), re.I | re.U)
 						data[i][4] = 'Face Amount: $' + \
-							((nn.group(0))+',000,000')
+							((nn.group(0)) + ',000,000')
 					else:
-						data[i][4] = 'Face Amount: $'+amwd.group(0)
+						data[i][4] = 'Face Amount: $' + amwd.group(0)
 		else:
 			data[i][4] = " "
 
@@ -374,7 +374,7 @@ def reg(st, i, data, wtr):
 		if(lives_reg):
 			data[i][10] = lives_reg.groups()
 			if(prop_reg):
-				data[i][10] = lives_reg.groups()+prop_reg.groups()
+				data[i][10] = lives_reg.groups() + prop_reg.groups()
 		elif(prop_reg):
 			data[i][10] = prop_reg.groups()
 
@@ -382,9 +382,10 @@ def reg(st, i, data, wtr):
 			# Write else outsite condition (to stop rewriting of above cell)
 			data[i][10] = ""
 
-
 		# medical data
-		data[i][11] = give_med_terms(line)
+		# data[i][11] = give_med_terms(line)
+		data[i][11] = "Med terms"
+
 	data[i][13] = st
 	wtr.writerows(data)
 
@@ -396,11 +397,11 @@ def preprocess():
 
 
 def regex_processing_main(file):
-	logging.debug('Regex Processing starting ... ')
+	logger.info('>> Start - Feature extractions using')
 	data = preprocess()
 	st = []
 	i = 0
-	logging.debug('Opening Raw Data File')
+	logger.debug('Opening Raw Data File - ' + config.regex_processed_csv)
 
 	out = open(config.regex_processed_csv, 'w', newline='')
 	wtr = csv.writer(out)
@@ -417,6 +418,6 @@ def regex_processing_main(file):
 			st = []
 
 	out.close()
-	logging.debug('Regex Processing Completed.. \n ')
+	logger.info('>> End - Feature extractions using')
 
 # regex_processing_main(config.raw_data_csv)
