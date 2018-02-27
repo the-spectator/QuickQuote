@@ -87,7 +87,7 @@ def genderRegex(line):
 	else:
 		ans=" "
 
-	return ans.lower()
+	return ans.strip().lower()
 
 def yearRegex(line):
 	ans=" "
@@ -111,7 +111,7 @@ def yearRegex(line):
 		ans=x1.group(0)
 	else:
 		ans=" "
-	return ans
+	return ans.strip().strip()
 
 def productRegex(line):
 	ans=" "
@@ -129,7 +129,7 @@ def productRegex(line):
 		ans=(final_str)
 	else:
 		ans=" "
-	return ans
+	return ans.strip()
 
 def weightRegex(line):
 	ans=" "
@@ -140,7 +140,7 @@ def weightRegex(line):
 		w_reg = re.search(weight_word, pr.group(0), re.I | re.U)
 		if(w_reg):
 			ans = "196 lbs"
-			return ans
+			return ans.strip()
 	else:
 		x=re.search(weight_num, line, re.I | re.U) 
 		wt=re.search(weight, line, re.I | re.U)
@@ -154,7 +154,7 @@ def weightRegex(line):
 		else:
 			ans=" "
 		
-	return ans
+	return ans.strip()
 
 def heightRegex(line):
 	ans=" "
@@ -165,7 +165,7 @@ def heightRegex(line):
 		h_reg = re.search(height_word, pr.group(0), re.I | re.U)
 		if(h_reg):
 			ans = "5 Feet 9 Inches"
-			return ans
+			return ans.strip()
 	else:
 		ht = re.search(height1, line, re.I | re.U)
 		htsym = re.search(height2, line, re.I | re.U)
@@ -183,7 +183,7 @@ def heightRegex(line):
 				ans=am
 		else:
 			ans=" "
-	return ans
+	return ans.strip()
 
 def ageRegex(line):
 	
@@ -246,7 +246,7 @@ def ageRegex(line):
 			#ans=(currentYear-(int)(ans_year))
 	
 	# print(ans)	
-	return ans
+	return ans.strip()
 
 def habitRegex(line):
 	ans=" "
@@ -265,7 +265,7 @@ def habitRegex(line):
 			ans="Tobacco"
 	else:
 		ans=" "
-	return ans
+	return ans.strip()
 	
 def faceamountRegex(line):
 	ans=" "
@@ -347,7 +347,7 @@ def faceamountRegex(line):
 					ans='Face Amount: $'+amwd.group(0)
 	else:
 		ans=" "
-	return ans
+	return ans.strip()
 	
 def medicationRegex(line):
 	#Medication & Treatment
@@ -359,7 +359,7 @@ def medicationRegex(line):
 			ans="No Medication"
 	else:
 		ans = " "
-	return ans
+	return ans.strip()
 
 def propertyRegex(line):
 	#Property
@@ -372,7 +372,7 @@ def propertyRegex(line):
 			ans=lives_reg.groups()+prop_reg.groups()
 	elif(prop_reg):
 		ans=prop_reg.groups()
-	return ans
+	return ans.strip()
 
 def propertyRegex(line):
 	#Family
@@ -383,7 +383,7 @@ def propertyRegex(line):
 		ans=family_reg.groups()
 	else:															#Write else outsite condition (to stop rewriting of above cell)
 		ans=""
-	return ans
+	return ans.strip()
 
 
 def medicalTerms(doc):
