@@ -45,7 +45,7 @@ def preprocess_main(file):
 	logging.debug("Pre processing starting .. ")
 	df = pd.read_csv(config.regex_processed_csv, encoding='UTF-8')
 	df = df.iloc[1:]
-	df = df.drop(columns=['Year_of_birth'])
+	df = df.drop(columns=['Year_of_Birth'])
 	
 	of = pd.read_csv(file,encoding = 'UTF-8')
 	

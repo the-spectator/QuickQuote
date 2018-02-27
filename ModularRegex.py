@@ -181,11 +181,12 @@ def heightRegex(line):
 			ans=" "
 	return ans
 
-def ageRegex(df):
-	ans=" "
-	if(df['Year_of_Birth']):
-		print(df['Year_of_Birth'])
-	line=df['Contents']
+def ageRegex(line):
+	
+		
+	#--------------------------------------------------------------------
+
+
 	age_reg = re.search(age, line, re.I | re.U)
 	age_simple_reg = re.search(age_simple, line, re.I | re.U)
 	dob = re.search(DOB, line, re.I | re.U)
@@ -231,10 +232,14 @@ def ageRegex(df):
 			if(an):				
 				#print ("DOB:"+ an.group(0))
 				ans=(an.group(0))
-			
-		if(df['Year_of_Birth'] and df['Year_of_Birth']!='0'):
-			currentYear = datetime.now().year
-			ans=(currentYear-(int)(df['Year_of_Birth']))
+		
+		#ans_year = yearRegex(line)
+		#print("AAMN")	
+		#print(type(ans_year), ans_year)	
+		
+		#if(ans_year and ans_year!=0):
+		#	currentYear = datetime.now().year
+			#ans=(currentYear-(int)(ans_year))
 	
 	print(ans)	
 	return ans
@@ -383,7 +388,7 @@ def regexmain(file):
 	df = pd.read_csv(file, encoding='UTF-8')
 	df['Gender'] = df['Contents'].apply(genderRegex)
 	df['Year_of_Birth'] = df['Contents'].apply(yearRegex)
-	#df['Age(years)'] = df.apply(ageRegex,axis=1)
+	df['Age(years)'] = df['Contents'].apply(ageRegex)
 	df['Product Type'] = df['Contents'].apply(productRegex)
 	df['Weight'] = df['Contents'].apply(weightRegex)
 	df['Height'] = df['Contents'].apply(heightRegex)
@@ -399,7 +404,9 @@ def regexmain(file):
 	
 #	df['Medical Data'] = df['Contents'].apply(medicalTerms)
 	print(df)
+	df.to_csv(config.regex_processed_csv, encoding='utf-8')
 	
 regexmain(config.raw_data_csv)	
+
 	
 	
