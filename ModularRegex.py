@@ -70,7 +70,7 @@ lives = r'(.*)?(\b[Ll]ives)\s?(.*)?'
 prop = r'(.*)?(\b[Pp]roperty)\s?(.*)?'
 
 def genderRegex(line):
-	ans=" "
+	ans=""
 	gender = r'(\b[Mm]ale?)|(\b[Ff]emale?)|(\bFEMALE)|(\bMALE)|(/b)|F/|M/'
 	#for line in st:
 	y = re.search(gender, line, re.I | re.U)
@@ -85,12 +85,12 @@ def genderRegex(line):
 	elif(y and num):
 		ans=(y.group(0))
 	else:
-		ans=" "
+		ans=""
 
 	return ans.strip().lower()
 
 def yearRegex(line):
-	ans=" "
+	ans=""
 	num = re.search(number, line, re.I | re.U)
 	x = re.search(Date, line, re.I | re.U)
 	ans = 0
@@ -110,11 +110,11 @@ def yearRegex(line):
 		#print (x1.group(0))
 		ans=x1.group(0)
 	else:
-		ans=" "
-	return ans.strip().strip()
+		ans=""
+	return ans
 
 def productRegex(line):
-	ans=" "
+	ans=""
 	z=re.search(product_type, line, re.I | re.U)
 	perm_reg = re.search(permanent, line, re.I | re.U)
 	term_type_reg = re.search(term, line, re.I | re.U)
@@ -128,11 +128,11 @@ def productRegex(line):
 		final_str= "Product Type: Term"
 		ans=(final_str)
 	else:
-		ans=" "
-	return ans.strip()
+		ans=""
+	return ans
 
 def weightRegex(line):
-	ans=" "
+	ans=""
 	#Preferred Height & Weight
 	pr = ''
 	pr = re.search(preferred, line, re.I | re.U)
@@ -152,12 +152,12 @@ def weightRegex(line):
 			if(am):
 				ans=(am.group(0))
 		else:
-			ans=" "
+			ans=""
 		
 	return ans.strip()
 
 def heightRegex(line):
-	ans=" "
+	ans=""
 	#Preferred Height & Weight
 	pr = ''
 	pr = re.search(preferred, line, re.I | re.U)
@@ -182,15 +182,11 @@ def heightRegex(line):
 					am+=re.search(height_num, (inch.group(0)), re.I | re.U).group(0) + ' Inches' 
 				ans=am
 		else:
-			ans=" "
+			ans=""
 	return ans.strip()
 
 def ageRegex(line):
 	
-		
-	#--------------------------------------------------------------------
-
-
 	age_reg = re.search(age, line, re.I | re.U)
 	age_simple_reg = re.search(age_simple, line, re.I | re.U)
 	dob = re.search(DOB, line, re.I | re.U)
@@ -244,12 +240,11 @@ def ageRegex(line):
 		#if(ans_year and ans_year!=0):
 		#	currentYear = datetime.now().year
 			#ans=(currentYear-(int)(ans_year))
-	
-	# print(ans)	
-	return ans.strip()
+		
+	return ans
 
 def habitRegex(line):
-	ans=" "
+	ans=""
 	sm = re.search(smoker, line, re.I | re.U)
 	tob = re.search(tobacco, line, re.I | re.U)
 	if(sm): 
@@ -264,11 +259,11 @@ def habitRegex(line):
 		else:
 			ans="Tobacco"
 	else:
-		ans=" "
+		ans=""
 	return ans.strip()
 	
 def faceamountRegex(line):
-	ans=" "
+	ans=""
 	w = re.search(faceamount, line	, re.I | re.U)
 	term_reg = re.search(termamount, line, re.I | re.U)
 	seek_reg = re.search(seeking, line, re.I | re.U)
@@ -346,12 +341,12 @@ def faceamountRegex(line):
 				else:
 					ans='Face Amount: $'+amwd.group(0)
 	else:
-		ans=" "
+		ans=""
 	return ans.strip()
 	
 def medicationRegex(line):
 	#Medication & Treatment
-	ans=" "
+	ans=""
 	med_reg = (re.search(med,line, re.I | re.U))
 	ans = ""
 	if(med_reg):
@@ -372,18 +367,18 @@ def propertyRegex(line):
 			ans=lives_reg.groups()+prop_reg.groups()
 	elif(prop_reg):
 		ans=prop_reg.groups()
-	return ans.strip()
+	return ans
 
-def propertyRegex(line):
+def familyRegex(line):
 	#Family
-	ans=" "
+	ans=""
 	family_reg = (re.search(family,line, re.I | re.U))
 	family_member_reg = (re.search(family_member,line, re.I | re.U))
 	if(family_reg):
 		ans=family_reg.groups()
 	else:															#Write else outsite condition (to stop rewriting of above cell)
 		ans=""
-	return ans.strip()
+	return ans
 
 
 def medicalTerms(doc):
@@ -391,23 +386,24 @@ def medicalTerms(doc):
 
 def regexmain(file):
 	df = pd.read_csv(file, encoding='UTF-8')
-	df = df.drop(columns=['ID','MessageID','Subject','recepientemail','SentOn','ReceivedOn','Offer_noise_free'])
-	df['Gender'] = df['Contents'].apply(genderRegex)
-	df['Year_of_Birth'] = df['Contents'].apply(yearRegex)
-	df['Age(years)'] = df['Contents'].apply(ageRegex)
-	df['Product Type'] = df['Contents'].apply(productRegex)
-	df['Weight'] = df['Contents'].apply(weightRegex)
-	df['Height'] = df['Contents'].apply(heightRegex)
-	df['Habit'] = df['Contents'].apply(habitRegex)
-	df['Face Amount'] = df['Contents'].apply(faceamountRegex)
-	df['Medication'] = df['Contents'].apply(medicationRegex)
-	df['Property'] = df['Contents'].apply(propertyRegex)
-	df['Property'] = df['Contents'].apply(propertyRegex)
-	df['Medical Data'] = df['Contents'].apply(medicalTerms)
-	df['Family'] = df['Contents'].apply(propertyRegex)
-	# df['Medical Data'] = df['Contents'].apply(medicalTerms)
-	df = df.drop(columns=['Contents'])
-	df.to_csv(config.regex_processed_csv,index =False, encoding='utf-8')
+	of = pd.DataFrame()
+	of['Contents'] = df['Contents']
+	of['Offer_noise_free'] = df['Offer_noise_free']
+	of['recepientemail'] = df['recepientemail']
+	of['Gender'] = of['Contents'].apply(genderRegex)
+	of['Year_of_Birth'] = of['Contents'].apply(yearRegex)
+	of['Age(years)'] = of['Contents'].apply(ageRegex)
+	of['Product Type'] = of['Contents'].apply(productRegex)
+	of['Weight'] = of['Contents'].apply(weightRegex)
+	of['Height'] = of['Contents'].apply(heightRegex)
+	of['Habit'] = of['Contents'].apply(habitRegex)
+	of['Face Amount'] = of['Contents'].apply(faceamountRegex)
+	of['Medication'] = of['Contents'].apply(medicationRegex)
+	of['Property'] = of['Contents'].apply(propertyRegex)
+	of['Medical Data'] = of['Contents'].apply(medicalTerms)
+	of['Family'] = of['Contents'].apply(familyRegex)
+	# df = df.drop(columns=['Contents'])
+	of.to_csv(config.regex_processed_csv,index =False, encoding='utf-8')
 	
 # regexmain(config.raw_data_csv)	
 

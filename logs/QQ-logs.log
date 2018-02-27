@@ -52,3 +52,132 @@
 2018-02-27 16:08:59,447 INFO >> Start - Model training Random Forest
 2018-02-27 16:08:59,810 INFO Random Forest               25.000               0.154                        0.102s 
  
+2018-02-27 16:17:07,761 INFO >> Start - Model Maker
+2018-02-27 16:17:07,761 INFO >> Start - Mail Cleaning - Remove signature, Offer Standardize etc
+2018-02-27 16:17:07,811 INFO << End - Mail Cleaning
+2018-02-27 16:18:09,658 INFO >> Start - Preprocessing. Standardize Face amount, Weight... etc
+2018-02-27 16:18:09,658 DEBUG Opening -Data/regexProcessed.csv
+2018-02-27 16:18:09,664 INFO Standardize Weight
+2018-02-27 16:18:09,665 INFO Standardize Face amount
+2018-02-27 16:18:09,667 INFO << End - Preprocess
+2018-02-27 16:18:09,667 INFO >> Start - Model making
+2018-02-27 16:18:11,614 INFO >> Start - Model training Random Forest
+2018-02-27 16:18:11,975 INFO Random Forest               25.000               0.152                        0.102s 
+ 
+2018-02-27 16:18:11,976 INFO [[1 0 0 0]
+ [1 0 0 0]
+ [1 0 0 0]
+ [1 0 0 0]]
+2018-02-27 16:18:11,976 INFO >> Start - Model training SVM
+2018-02-27 16:18:11,984 INFO SVM                         25.000               0.004                        0.001s 
+ 
+2018-02-27 16:18:11,985 INFO [[1 0 0 0 0]
+ [0 0 0 1 0]
+ [1 0 0 0 0]
+ [0 0 0 0 0]
+ [1 0 0 0 0]]
+2018-02-27 16:18:11,985 INFO >> Start - Model training Logistic Regression
+2018-02-27 16:18:11,993 INFO Logistic Regression         25.000               0.005                        0.001s 
+ 
+2018-02-27 16:18:11,994 INFO [[1 0 0 0 0]
+ [0 0 0 1 0]
+ [1 0 0 0 0]
+ [0 0 0 0 0]
+ [1 0 0 0 0]]
+2018-02-27 16:18:11,994 INFO >> Start - Model training SGDClassifier
+2018-02-27 16:18:12,004 INFO SGDClassifier               0.000                0.005                        0.001s 
+ 
+2018-02-27 16:18:12,005 INFO [[0 0 0 0 0 1]
+ [0 0 0 0 0 0]
+ [0 0 0 0 1 0]
+ [1 0 0 0 0 0]
+ [0 0 0 0 0 0]
+ [0 1 0 0 0 0]]
+2018-02-27 16:18:12,005 INFO << End - Model making
+2018-02-27 16:18:12,005 INFO << End - Model Maker
+2018-02-27 17:23:15,120 INFO >> Start - Model Maker
+2018-02-27 17:23:15,120 INFO >> Start - Mail Cleaning - Remove signature, Offer Standardize etc
+2018-02-27 17:23:15,169 INFO << End - Mail Cleaning
+2018-02-27 17:24:22,527 INFO >> Start - Preprocessing. Standardize Face amount, Weight... etc
+2018-02-27 17:24:22,527 DEBUG Opening -Data/regexProcessed.csv
+2018-02-27 17:24:22,533 INFO Standardize Weight
+2018-02-27 17:24:22,534 INFO Standardize Face amount
+2018-02-27 17:24:22,536 INFO << End - Preprocess
+2018-02-27 17:24:22,536 INFO >> Start - Model making
+2018-02-27 17:24:24,552 INFO >> Start - Model training Random Forest
+2018-02-27 17:24:24,920 INFO Random Forest               25.000               0.155                        0.103s 
+ 
+2018-02-27 17:24:24,921 INFO [[1 0 0 0]
+ [1 0 0 0]
+ [1 0 0 0]
+ [1 0 0 0]]
+2018-02-27 17:24:24,921 INFO >> Start - Model training SVM
+2018-02-27 17:24:24,936 INFO SVM                         25.000               0.007                        0.002s 
+ 
+2018-02-27 17:24:24,937 INFO [[1 0 0 0 0]
+ [0 0 0 1 0]
+ [1 0 0 0 0]
+ [0 0 0 0 0]
+ [1 0 0 0 0]]
+2018-02-27 17:24:24,937 INFO >> Start - Model training Logistic Regression
+2018-02-27 17:24:24,953 INFO Logistic Regression         25.000               0.008                        0.002s 
+ 
+2018-02-27 17:24:24,954 INFO [[1 0 0 0 0]
+ [0 0 0 1 0]
+ [1 0 0 0 0]
+ [0 0 0 0 0]
+ [1 0 0 0 0]]
+2018-02-27 17:24:24,954 INFO >> Start - Model training SGDClassifier
+2018-02-27 17:24:24,970 INFO SGDClassifier               0.000                0.008                        0.002s 
+ 
+2018-02-27 17:24:24,971 INFO [[0 0 0 0 0 0 1]
+ [0 0 0 0 0 0 0]
+ [0 0 0 0 0 1 0]
+ [0 0 0 0 1 0 0]
+ [0 0 0 0 0 0 0]
+ [0 0 0 0 0 0 0]
+ [0 1 0 0 0 0 0]]
+2018-02-27 17:24:24,971 INFO << End - Model making
+2018-02-27 17:24:24,971 INFO << End - Model Maker
+2018-02-27 17:40:22,551 INFO >> Start - Model Maker
+2018-02-27 17:40:22,551 INFO >> Start - Mail Cleaning - Remove signature, Offer Standardize etc
+2018-02-27 17:40:22,600 INFO << End - Mail Cleaning
+2018-02-27 17:41:29,765 INFO >> Start - Preprocessing. Standardize Face amount, Weight... etc
+2018-02-27 17:41:29,766 DEBUG Opening -Data/regexProcessed.csv
+2018-02-27 17:41:29,771 INFO Standardize Weight
+2018-02-27 17:41:29,773 INFO Standardize Face amount
+2018-02-27 17:41:29,775 INFO << End - Preprocess
+2018-02-27 17:41:29,775 INFO >> Start - Model making
+2018-02-27 17:41:31,735 INFO >> Start - Model training Random Forest
+2018-02-27 17:41:32,103 INFO Random Forest               25.000               0.157                        0.102s 
+ 
+2018-02-27 17:41:32,104 INFO [[1 0 0 0]
+ [1 0 0 0]
+ [1 0 0 0]
+ [1 0 0 0]]
+2018-02-27 17:41:32,104 INFO >> Start - Model training SVM
+2018-02-27 17:41:32,112 INFO SVM                         25.000               0.004                        0.001s 
+ 
+2018-02-27 17:41:32,112 INFO [[1 0 0 0]
+ [1 0 0 0]
+ [1 0 0 0]
+ [1 0 0 0]]
+2018-02-27 17:41:32,112 INFO >> Start - Model training Logistic Regression
+2018-02-27 17:41:32,121 INFO Logistic Regression         0.000                0.005                        0.001s 
+ 
+2018-02-27 17:41:32,122 INFO [[0 0 0 0 1]
+ [0 0 0 1 0]
+ [1 0 0 0 0]
+ [0 0 0 0 0]
+ [1 0 0 0 0]]
+2018-02-27 17:41:32,122 INFO >> Start - Model training SGDClassifier
+2018-02-27 17:41:32,131 INFO SGDClassifier               0.000                0.005                        0.001s 
+ 
+2018-02-27 17:41:32,132 INFO [[0 0 0 0 0 1]
+ [0 0 0 0 0 0]
+ [0 0 0 0 1 0]
+ [0 1 0 0 0 0]
+ [0 0 0 0 0 0]
+ [0 1 0 0 0 0]]
+2018-02-27 17:41:32,132 INFO << End - Model making
+2018-02-27 17:41:32,132 INFO << End - Model Maker

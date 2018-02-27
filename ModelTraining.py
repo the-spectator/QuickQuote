@@ -108,7 +108,7 @@ def model_making_main(file):
 	logger.info(">> Start - Model making")
 
 	df = pd.read_csv(config.preprocessed_csv, encoding='UTF-8')
-	df['ColumnA'] = df[df.columns[0:12]].apply(lambda x: ','.join(x.dropna()), axis=1)
+	df['ColumnA'] = df[df.columns[2:14]].apply(lambda x: ','.join(x.dropna()), axis=1)
 
 	logging.info("Remove puncutation, tokenize")
 	df['Lemmitize'] = df['ColumnA'].apply(rem_punt).apply(tokenize)
@@ -122,8 +122,7 @@ def model_making_main(file):
 	of = pd.read_csv(file, encoding='UTF-8')
 	y = of['Offer_noise_free']
 
-	X_train, X_test, y_train, y_test = train_test_split(
-		X, y, test_size=0.2, random_state=4)
+	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=4)
 	vect = TfidfVectorizer(max_df=0.5, max_features=10000,min_df=1, use_idf=True, ngram_range=(1, 2), lowercase=True)
 	represent = TfidfVectorizer(max_df=0.5, max_features=10000,min_df=1, use_idf=True, ngram_range=(1, 1), lowercase=True)
 	matrix = represent.fit_transform(X.values)

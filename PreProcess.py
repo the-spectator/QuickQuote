@@ -10,8 +10,8 @@ logger = logging.getLogger('QQ')
 
 
 def changeFace(ans):
+	ans = str(ans)
 	val = re.sub("Face Amount: ", ' ', ans)
-
 	val = re.sub(",", ' ', val)
 	val = str(re.sub(" ", '', val))
 	index = (val.find('$'))
@@ -23,8 +23,8 @@ def changeFace(ans):
 
 
 def changeWt(ans):
+	ans = str(ans)
 	val = re.sub("#", 'lb', ans)
-
 	val = re.sub("lbs", 'lb', val)
 	val = str(re.sub(" ", '', val))
 	if(re.search('KG|Kg|kg', val, re.I | re.U)):
@@ -50,10 +50,10 @@ def preprocess_main(file):
 	# df = df.iloc[1:]
 	df = df.drop(columns=['Year_of_Birth'])
 	of = pd.read_csv(file, encoding='UTF-8')
-	print('of',len(of['Senderemail']))
-	print('df',len(df['Senderemail']))
-	of['Senderemail'] = of['Senderemail'].apply(emailfirst)
-	df['Senderemail'] = of['Senderemail'].values
+	# print('of',len(of['Senderemail']))
+	# print('df',len(df['Senderemail']))
+	of['recepientemail'] = of['recepientemail'].apply(emailfirst)
+	df['recepientemail'] = of['recepientemail'].values
 
 	logger.info("Standardize Weight")
 	df['Weight'] = df['Weight'].apply(changeWt)
