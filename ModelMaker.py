@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from RegexProcessing import regex_processing_main
+from ModularRegex import regexmain
 from PreProcess import preprocess_main
 from ModelTraining import model_making_main
 from MailCleaner import mail_cleaner_main
@@ -24,7 +24,7 @@ def model_maker_main():
 
 	mail_cleaner_main(config.raw_data_csv)
 
-	regex_processing_main(config.raw_data_csv)
+	regexmain(config.raw_data_csv)
 
 	preprocess_main(config.raw_data_csv)
 

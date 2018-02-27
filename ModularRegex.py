@@ -5,6 +5,10 @@ import pandas as pd
 import re
 import config
 from datetime import datetime
+try:
+	from search_term import give_med_terms
+except:
+	from QuickUMLS.search_term import give_med_terms
 
 number = r'\d{2,3}'
 
@@ -241,7 +245,7 @@ def ageRegex(line):
 		#	currentYear = datetime.now().year
 			#ans=(currentYear-(int)(ans_year))
 	
-	print(ans)	
+	# print(ans)	
 	return ans
 
 def habitRegex(line):
@@ -383,11 +387,11 @@ def propertyRegex(line):
 
 
 def medicalTerms(doc):
-	return search_med_terms(doc)
-
+	return give_med_terms(doc)
 
 def regexmain(file):
 	df = pd.read_csv(file, encoding='UTF-8')
+	df = df.drop(columns=['ID','MessageID','Subject','recepientemail','SentOn','ReceivedOn','Offer_noise_free'])
 	df['Gender'] = df['Contents'].apply(genderRegex)
 	df['Year_of_Birth'] = df['Contents'].apply(yearRegex)
 	df['Age(years)'] = df['Contents'].apply(ageRegex)
@@ -398,20 +402,16 @@ def regexmain(file):
 	df['Face Amount'] = df['Contents'].apply(faceamountRegex)
 	df['Medication'] = df['Contents'].apply(medicationRegex)
 	df['Property'] = df['Contents'].apply(propertyRegex)
-	
-
-	df['Medication'] = df['Contents'].apply(medicationRegex)
 	df['Property'] = df['Contents'].apply(propertyRegex)
 	df['Medical Data'] = df['Contents'].apply(medicalTerms)
 	df['Family'] = df['Contents'].apply(propertyRegex)
-	df['Medical Data'] = df['Contents'].apply(medicalTerms)
-#	df['Medical Data'] = df['Contents'].apply(medicalTerms)
+	# df['Medical Data'] = df['Contents'].apply(medicalTerms)
+	df = df.drop(columns=['Contents'])
 	df.to_csv(config.regex_processed_csv,index =False, encoding='utf-8')
 	
-regexmain(config.raw_data_csv)	
+# regexmain(config.raw_data_csv)	
 
 
 
 
-	
-	
+

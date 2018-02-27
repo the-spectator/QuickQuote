@@ -96,9 +96,8 @@ def model_making(model_name, vect, model, X_train, y_train, X_test, y_test):
 	y_pred = clf.predict(X_test)
 
 	results = (accuracy_score(y_test, y_pred) * 100)
-	logger.info("{:20} {:^20.3f} {:^20.3f} {:20.3f}s \n ".format(
-		model_name, results, training_time, prediction_time))
-	logger.info(f"{matrix_confusion.append(confusion_matrix(y_test, y_pred))}")
+	logger.info("{:20} {:^20.3f} {:^20.3f} {:20.3f}s \n ".format(model_name, results, training_time, prediction_time))
+	logger.info(f"{confusion_matrix(y_test, y_pred)}")
 
 
 def conversion(doc):
@@ -142,13 +141,10 @@ def model_making_main(file):
 	model5 = LogisticRegression()
 	model7 = SGDClassifier(alpha=.0001)
 	#model_making("XGBOOST",vect, model1, X_train, y_train, X_test, y_test)
-	model_making("Random Forest", vect, model3,
-				 X_train, y_train, X_test, y_test)
+	model_making("Random Forest", vect, model3,X_train, y_train, X_test, y_test)
 	model_making("SVM", vect, model4, X_train, y_train, X_test, y_test)
-	model_making("Logistic Regression", vect, model5,
-				 X_train, y_train, X_test, y_test)
-	model_making("SGDClassifier", vect, model7,
-				 X_train, y_train, X_test, y_test)
+	model_making("Logistic Regression", vect, model5,X_train, y_train, X_test, y_test)
+	model_making("SGDClassifier", vect, model7,X_train, y_train, X_test, y_test)
 	logger.info("<< End - Model making")
 
 
