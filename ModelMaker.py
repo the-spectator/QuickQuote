@@ -7,15 +7,29 @@ from MailCleaner import mail_cleaner_main
 import config
 import logging
 
-logging.basicConfig(filename=config.log_file, level=logging.DEBUG)
+# Log configuration and initialization
+logger = logging.getLogger('QQ')
+logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+fileHandler = logging.FileHandler('logs/QQ-logs.log')
+fileHandler.setFormatter(formatter)
+logger.addHandler(fileHandler)
+consoleHandler = logging.StreamHandler()
+consoleHandler.setFormatter(formatter)
+logger.addHandler(consoleHandler)
+
 
 def model_maker_main():
+	logger.info('>> Start - Model Maker')
 
-	# config.raw_data_csv = 'Data/raw_data1.csv'
 	mail_cleaner_main(config.raw_data_csv)
+
 	regex_processing_main(config.raw_data_csv)
+
 	preprocess_main(config.raw_data_csv)
+
 	model_making_main(config.raw_data_csv)
-	logging.debug("Completed ...")
+
+	logger.info('<< End - Model Maker')
 
 model_maker_main()

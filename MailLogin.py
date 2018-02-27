@@ -5,12 +5,12 @@ from secrets import EMAIL, PASSWORD
 import logging
 import config
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger = logging.getLogger('QQ')
+
 
 def login():
-	logger.debug('Establishing Connections ....')
-	server = IMAPClient(config.imap_server, use_uid = True, ssl = True)
+	logger.info('Connect to mailbox - ' + EMAIL)
+	server = IMAPClient(config.imap_server, use_uid=True, ssl=True)
 	server.login(EMAIL, PASSWORD)
-	logger.debug('Connection Established ....')
+	logger.debug('Connection Established')
 	return server

@@ -14,9 +14,7 @@ import collections
 import config
 import logging
 
-logging.basicConfig(filename=config.log_file, level=logging.WARNING)
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger = logging.getLogger('QQ')
 
 def clean(data):
     # employing the lxml parser to clean the content of mail
@@ -86,7 +84,7 @@ def filter_predicted(server, unread):
     return new_unread
 
 def mail_reader(folder, flags, new_flags):
-    logger.debug('MailReader started ...')
+    logger.info('>> Start - Reading Mailbox')
     server = login()
     # Selecting the inbox folder
     message_box = server.select_folder(folder)
@@ -95,16 +93,17 @@ def mail_reader(folder, flags, new_flags):
     messages = server.search(flags)
 
     # Filter the already predicted unread emails
-    logger.debug(f'Orignal Unread Mails {messages}')
+    logger.debug(f'UnRead eMails {messages}')
+    
     messages = filter_predicted(server, messages)
-    logger.debug(f'Filtered Uread Mails {messages}')
+    logger.debug(f'Urpredicted eMails {messages}')
 
     # get_flags method gives the flags(Unseen or Seen) for each message
     # logger.debug(server.get_flags(messages))
 
     # Get the id, msg_id, subject, date, sender_email, receiver_email, content
     # from email
-    logger.debug('Fetching EmailData ....')    
+    logger.debug('Fetching Email Data')    
     body = server.fetch(messages, ['ENVELOPE', 'RFC822'])
     data_dict = []
     for msgid, data in body.items():
@@ -119,22 +118,22 @@ def mail_reader(folder, flags, new_flags):
         row = {'ID': msgid, 'MessageID': message_id, 'Subject': subject, 'Senderemail': from_,
                'recepientemail': to, 'SentOn': date, 'ReceivedOn': date, 'Offer_noise_free': None, 'Contents': content}
         data_dict.append(row)
-    logger.debug('EmailData Fetched ....')
+        
     # Writing data to csv
     write_to_csv(config.eraw_data_csv, data_dict)
 
     # to set messages unseen to mark it seen use [b'\\Seen']
     server.set_flags(messages, new_flags)
 
-    logger.debug('Resetting the Flags ....')
     # messages = server.search(['ALL'])
     # logger.debug(server.get_flags(messages))
     server.logout()
-    logger.debug('Connection Disconnected Successfully ...')
+    logger.debug('<< End - Mail read')
+    
 # For getting all unread emails from inbox
 # mail_reader('INBOX',['SEEN'],[b'\\SEEN'])
 
-mail_reader('INBOX', ['UNSEEN'], [])
+# mail_reader('INBOX', ['UNSEEN'], [])
 
 # For getting all emails from sentbox
 # mail_reader('SENT',['ALL'])

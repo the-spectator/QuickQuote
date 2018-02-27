@@ -381,8 +381,10 @@ def propertyRegex(line):
 		ans=""
 	return ans
 
+
 def medicalTerms(doc):
 	return search_med_terms(doc)
+
 
 def regexmain(file):
 	df = pd.read_csv(file, encoding='UTF-8')
@@ -400,13 +402,16 @@ def regexmain(file):
 
 	df['Medication'] = df['Contents'].apply(medicationRegex)
 	df['Property'] = df['Contents'].apply(propertyRegex)
+	df['Medical Data'] = df['Contents'].apply(medicalTerms)
 	df['Family'] = df['Contents'].apply(propertyRegex)
-	
+	df['Medical Data'] = df['Contents'].apply(medicalTerms)
 #	df['Medical Data'] = df['Contents'].apply(medicalTerms)
-	print(df)
-	df.to_csv(config.regex_processed_csv, encoding='utf-8')
+	df.to_csv(config.regex_processed_csv,index =False, encoding='utf-8')
 	
 regexmain(config.raw_data_csv)	
+
+
+
 
 	
 	
