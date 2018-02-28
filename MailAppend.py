@@ -60,7 +60,7 @@ def mark_predicted(id, message_id):
 def append_mail(doc, server, folder, new_flags):
 	email_to = give_email_address([doc['Senderemail']])
 	email_from = give_email_address([config.email_from])
-	email_subject = 'Re:' + doc['Subject']
+	email_subject = f"Re:{doc['Subject']}"
 	result = doc['Offer_noise_free']
 	email_template = read_template()
 	email_content = email_template.format(product_=result, from_=doc['Senderemail'], 

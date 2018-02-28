@@ -77,12 +77,13 @@ def filter_predicted(server, unread):
         envelope = data[b'ENVELOPE']
         message_id = envelope.message_id.decode('utf8')
         unread_ids.append(message_id)
-        # if len(df[df['MessageID'] == message_id]) == 0 :
-        if message_id not in df['MessageID']:
+        if len(df[df['MessageID'] == message_id]) == 0 :
+        # if message_id not in df['MessageID']:
             new_unread.append(msgid)
     for i in df['MessageID']:
     	if i not in unread_ids:
-    		df.query(f'MessageID != {i}', inplace = True)
+    		# df.query('MessageID != ' + i, inplace = True)
+            df = df[df.MessageID != i]
     df.to_csv(config.predicted_csv, header = True, index = False, encoding = 'utf-8')
     return new_unread
 
