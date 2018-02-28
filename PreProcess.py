@@ -33,6 +33,24 @@ def changeWt(ans):
 	#val = int(val)
 	return (val)
 
+def changeHeight(ans):
+	ans = str(ans)
+	val = re.sub("Feet", '.', ans)
+	val = str(re.sub(" ", '', val))
+	if(re.search('inches|Inches', val, re.I | re.U) or val=='nan'):
+		val = re.sub("Inches", '', val)
+		return (val)
+	else:
+		val = re.sub("Inches", '', val)	
+		val = val + '0'
+		return (val)
+
+def changePT(ans):
+	ans = str(ans)
+	val = re.sub("Product Type", '', ans)
+	val = re.sub(":", '', val)
+	val = str(re.sub(" ", '', val))
+	return (val)
 
 def emailfirst(doc):
 	if(type(doc) == str):
@@ -58,9 +76,17 @@ def preprocess_main(file):
 	logger.info("Standardize Weight")
 	df['Weight'] = df['Weight'].apply(changeWt)
 
+	logger.info("Standardize Height")
+	df['Height'] = df['Height'].apply(changeHeight)
+
 	logger.info("Standardize Face amount")
 	df['Face Amount'] = df['Face Amount'].apply(changeFace)
+	
+	logger.info("Standardize Product Type")
+	df['Product Type'] = df['Product Type'].apply(changePT)
 
+	
+	#print(df)
 	df.to_csv(config.preprocessed_csv, index=False, encoding="utf-8")
 	logger.info("<< End - Preprocess")
 
