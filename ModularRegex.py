@@ -5,14 +5,14 @@ import pandas as pd
 import re
 import config
 from datetime import datetime
-try:
-	from search_term import give_med_terms
-except:
-	from QuickUMLS.search_term import give_med_terms
+# try:
+#	from search_term import give_med_terms
+#except:
+#	from QuickUMLS.search_term import give_med_terms
 
 number = r'\d{2,3}'
 
-gender = r'(\b[Mm]ale?)|(\b[Ff]emale?)|(\bFEMALE)|(\bMALE)|(/b)|F/|M/'
+gender = r'(\b[Mm]ale?)|(\b[Ff]emale?)|(\bFEMALE)|(\bMALE)|(\bF/\d)|(\bM/\d)|(\bf/\d)|(\bm/\d)'
 
 Date = r'(([A-Z0-9][A-Z0-9]?[/-])?[A-Z0-9][A-Z0-9]?[/-][A-Z0-9][A-Z0-9][A-Z0-9]?[A-Z0-9]?)|([A-Za-z][A-Za-z][A-Za-z]\s..?[,]\s....)'
 
@@ -31,6 +31,7 @@ amount_without_dollar = r'(\$?\s?\d{1,3}(,\d{2,3})*(\.\d+)?)(\s?[kK]?)(\s[mM]?[m
 faceamount = r'(\b[Ff]ace\s?[Aa]mount:?\s?.*)'
 termamount = r'(.*)?[Tt][eE][rR][mM](.*)?'   			#Regex to read single line from first newline to next newline
 seeking = r'(.*)?[Ss][eE][eE][kK]([iI][nN][gG])?(.*)?'
+cover = r'(.*)?[Cc][oO][vV][eE][rR]([aA][gG][eE])?(.*)?'
 term_year = r'(y(ea)?r|Y(ea)?r|Y(ea)?r)'
 k_conv = r'(\s?[kK])'
 m_conv = r'(\s?[mM][mM]?(illion)?(ILLION)?)'
@@ -39,15 +40,16 @@ num_conv = r'\d{1,3}'
 weight = r'(.*)?\b[wW][eE][iI][gG][hH][tT]\s?(.*)?' 
 weight_num = r'(\d*\.?\d+)\s?(lb|lbs|Lbs|LB|LBS|kg|Kg|KG|#)'		#r'(.*)\s?([lL][bB][sS]|[oO][zZ]|[gG]|[kK][Gg])' 
 
+age_only = r'\b([Aa][Gg][Ee])\b'
 age_simple = r'(.*)?[Aa][Gg][Ee]\s?(.*)?'
 age = r'(.*\s?[Yy]([eE][aA])?[rR]?[sS]?\s?([oO][lL][dD])?)'
 age_from_gender = r'(.*)?(\b[Mm]ale?)|(\b[Ff]emale?)|(\bFEMALE)|(\bMALE)|(/b)\s?(.*)?' 
 
 height_num = r'\d{1,2}'
 height1 = r'((.*)?\s?([Ff][eE][eE][tT])((.*)?\s?([iI][nN][Cc][Hh][Ee][Ss]))?)'			#Two types of inches => "|”
-height2 = r'.[\'|\’](\s?.[\"|\”])?' 											
-feet = r'\d[\'|\’]'
-inches = r'\d[\"|\”]' 
+height2 = r'.[\'](\s?.[\"])?' 											
+feet = r'\d[\']'
+inches = r'\d[\"]' 
 
 preferred = r'(.*)?(Preferred|preferred)\s?(.*)?'
 height_word = r'Height|height'
@@ -64,20 +66,19 @@ no = r'[nN][oO]'
 med = r'(.*)?\b[mM][eE][dD][iI][cC][aA][tT][iI][oO][nN]\s?(.*)?'
 
 family = r'(.*)?(\b[Ff]amily)\s?(.*)?'
-family_member = r'(.*)?(\b[Mm]om)|(\b[Ff]ather)|(\b[Dd]ad)|(\b[Ss]ister)|(\b[Bb]rother)|(\b[Hh]usband)|(\b[Ww]ife)\s?(.*)?'
+family_member = r'(.*)?(\b[Mm]om)|(\b[Ff]ather)|(\b[Dd]ad)|(\b[Ss]ister)|(\b[Bb]rother)|(\b[Hh]usband)|(\b[Ww]ife)|(\b[Pp]arental)|(\b[Mm]aternal)|(\b[Gg]randfather)|(\b[Gg]randmother)\s?(.*)?'
 
 lives = r'(.*)?(\b[Ll]ives)\s?(.*)?'
 prop = r'(.*)?(\b[Pp]roperty)\s?(.*)?'
 
 def genderRegex(line):
 	ans=""
-	gender = r'(\b[Mm]ale?)|(\b[Ff]emale?)|(\bFEMALE)|(\bMALE)|(/b)|F/|M/'
 	#for line in st:
 	y = re.search(gender, line, re.I | re.U)
 	if(y):
-		if(y.group(0)=='F/'):
+		if(y.group(0)=='F/' or y.group(0)=='f/'):
 			ans='Female'
-		elif(y.group(0)=='M/'):
+		elif(y.group(0)=='M/' or y.group(0)=='m/'):
 			ans='Male'
 		else:
 			#print (y.group(0)+"\n")
@@ -226,20 +227,23 @@ def ageRegex(line):
 				#print ("DOB:"+ an.group(0))
 				ans=(an.group(0))
 	
-		if(age_simple_reg):								#Age 20
-			age_num = age_simple_reg.group(0)			
-			an = re.search(number, age_num, re.I | re.U)
-			if(an):				
-				#print ("DOB:"+ an.group(0))
-				ans=(an.group(0))
 		
-		#ans_year = yearRegex(line)
-		#print("AAMN")	
+		ans_year = yearRegex(line)							#With Year of birth 
 		#print(type(ans_year), ans_year)	
 		
-		#if(ans_year and ans_year!=0):
-		#	currentYear = datetime.now().year
-			#ans=(currentYear-(int)(ans_year))
+		if(ans_year and ans_year!=0):
+			currentYear = datetime.now().year
+			ans=(currentYear-(int)(ans_year))
+		
+		if(age_simple_reg):								#Age 20
+			age_only_reg = re.search(age_only, age_simple_reg.group(0), re.I | re.U)
+			if(age_only_reg):
+				age_num = age_simple_reg.group(0)			
+				an = re.search(number, age_num, re.I | re.U)
+				if(an):				
+					#print ("DOB:"+ an.group(0))
+					ans=(an.group(0))
+		
 		
 	return ans
 
@@ -267,6 +271,7 @@ def faceamountRegex(line):
 	w = re.search(faceamount, line	, re.I | re.U)
 	term_reg = re.search(termamount, line, re.I | re.U)
 	seek_reg = re.search(seeking, line, re.I | re.U)
+	coverage_reg = re.search(cover, line, re.I | re.U)
 	#With faceAmount
 	if(w):
 		k = re.search(k_conv, w.group(0), re.I | re.U)
@@ -312,6 +317,38 @@ def faceamountRegex(line):
 	elif(seek_reg):
 		amd = re.search(amount_with_dollar, seek_reg.group(0), re.I | re.U)
 		amwd = re.search(amount_without_dollar, seek_reg.group(0), re.I | re.U)			#Find 2nd regex in the same line of 1st regex 
+		if(amd):
+			#ans='Face Amount: '+(amd.group(0))
+			k = re.search(k_conv, amd.group(0), re.I | re.U)
+			m = re.search(m_conv, amd.group(0), re.I | re.U)
+			if(k):
+				nn = re.search(num_conv, amd.group(0), re.I | re.U)
+				ans='Face Amount: '+((nn.group(0))+',000')
+			elif(m):
+				nn = re.search(num_conv, amd.group(0), re.I | re.U)
+				ans='Face Amount: '+((nn.group(0))+',000,000')
+			else:
+				ans='Face Amount: '+amd.group(0)
+		elif(amwd):
+			term_year_reg = re.search(term_year, amwd.group(0), re.I | re.U)
+			if(term_year_reg):
+				ans='Term Year: '+(amwd.group(0))
+			else:
+				#ans='Face Amount: $'+(amwd.group(0))
+				k = re.search(k_conv, amwd.group(0), re.I | re.U)
+				m = re.search(m_conv, amwd.group(0), re.I | re.U)
+				if(k):
+					nn = re.search(num_conv, amwd.group(0), re.I | re.U)
+					ans='Face Amount: $'+((nn.group(0))+',000')
+				elif(m):
+					nn = re.search(num_conv, amwd.group(0), re.I | re.U)
+					ans='Face Amount: $'+((nn.group(0))+',000,000')
+				else:
+					ans='Face Amount: $'+amwd.group(0)
+	#With Coverage
+	elif(coverage_reg):
+		amd = re.search(amount_with_dollar, coverage_reg.group(0), re.I | re.U)
+		amwd = re.search(amount_without_dollar, coverage_reg.group(0), re.I | re.U)			#Find 2nd regex in the same line of 1st regex 
 		if(amd):
 			#ans='Face Amount: '+(amd.group(0))
 			k = re.search(k_conv, amd.group(0), re.I | re.U)
@@ -400,12 +437,13 @@ def regexmain(file):
 	of['Face Amount'] = of['Contents'].apply(faceamountRegex)
 	of['Medication'] = of['Contents'].apply(medicationRegex)
 	of['Property'] = of['Contents'].apply(propertyRegex)
-	of['Medical Data'] = of['Contents'].apply(medicalTerms)
+	# of['Medical Data'] = of['Contents'].apply(medicalTerms)
 	of['Family'] = of['Contents'].apply(familyRegex)
 	# df = df.drop(columns=['Contents'])
+	print(of)
 	of.to_csv(config.regex_processed_csv,index =False, encoding='utf-8')
 	
-# regexmain(config.raw_data_csv)	
+#regexmain(config.raw_data_csv)	
 
 
 
