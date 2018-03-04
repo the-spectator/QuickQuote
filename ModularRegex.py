@@ -12,7 +12,7 @@ from datetime import datetime
 
 number = r'\d{2,3}'
 
-gender = r'(\b[Mm]ale?)|(\b[Ff]emale?)|(\bFEMALE)|(\bMALE)|(\bF/\d)|(\bM/\d)|(\bf/\d)|(\bm/\d)'
+gender = r'(\b[Mm]ale?)|(\b[Ff]emale?)|(\bFEMALE)|(\bMALE)|(\bF/\s?(age)?\s?\d{2,3})|(\bM/\s?(age)?\s?\d{2,3})|(\bf/\s?(age)?\s?\d{2,3})|(\bm/\s?(age)?\s?\d{2,3})'
 
 Date = r'(([A-Z0-9][A-Z0-9]?[/-])?[A-Z0-9][A-Z0-9]?[/-][A-Z0-9][A-Z0-9][A-Z0-9]?[A-Z0-9]?)|([A-Za-z][A-Za-z][A-Za-z]\s..?[,]\s....)'
 
@@ -28,7 +28,7 @@ term = r'[tT][eE][rR][mM]'
 #Assuming USA currency dollar
 amount_with_dollar = r'(\$\s?\d{1,3}(,\d{2,3})*(\.\d+)?)(\s?[kK]?)(\s?[mM]?[mM]?(illion)?(ILLION)?)([bB]?)'
 amount_without_dollar = r'(\$?\s?\d{1,3}(,\d{2,3})*(\.\d+)?)(\s?[kK]?)(\s[mM]?[mM]?(illion)?(ILLION)?)([bB]?)((\s?[Yy][Ee][aA][rR][sS]?)?)'
-faceamount = r'(\b[Ff]ace\s?[Aa]mount:?\s?.*)'
+faceamount = r'(\b([Ff]ace\s?)?[Aa]mount:?\s?.*)'
 termamount = r'(.*)?[Tt][eE][rR][mM](.*)?'   			#Regex to read single line from first newline to next newline
 seeking = r'(.*)?[Ss][eE][eE][kK]([iI][nN][gG])?(.*)?'
 cover = r'(.*)?[Cc][oO][vV][eE][rR]([aA][gG][eE])?(.*)?'
@@ -36,9 +36,10 @@ term_year = r'(y(ea)?r|Y(ea)?r|Y(ea)?r)'
 k_conv = r'(\s?[kK])'
 m_conv = r'(\s?[mM][mM]?(illion)?(ILLION)?)'
 num_conv = r'\d{1,3}'
+ul = r'(.*)?\b[uU][lL]\b(.*)?'
 
 weight = r'(.*)?\b[wW][eE][iI][gG][hH][tT]\s?(.*)?' 
-weight_num = r'(\d*\.?\d+)\s?(lb|lbs|Lbs|LB|LBS|kg|Kg|KG|#)'		#r'(.*)\s?([lL][bB][sS]|[oO][zZ]|[gG]|[kK][Gg])' 
+weight_num = r'(\d*\.?\d+)\s?(lb|lbs|Lbs|LB|LBS|kg|Kg|KG|#|Pounds|pounds)'		#r'(.*)\s?([lL][bB][sS]|[oO][zZ]|[gG]|[kK][Gg])' 
 
 age_only = r'\b([Aa][Gg][Ee])\b'
 age_simple = r'(.*)?[Aa][Gg][Ee]\s?(.*)?'
@@ -47,9 +48,9 @@ age_from_gender = r'(.*)?(\b[Mm]ale?)|(\b[Ff]emale?)|(\bFEMALE)|(\bMALE)|(/b)\s?
 
 height_num = r'\d{1,2}'
 height1 = r'((.*)?\s?([Ff][eE][eE][tT])((.*)?\s?([iI][nN][Cc][Hh][Ee][Ss]))?)'			#Two types of inches => "|”
-height2 = r'.[\'](\s?.[\"])?' 											
+height2 = r'.[\'](\s?.[\"|\'\'])?' 											
 feet = r'\d[\']'
-inches = r'\d[\"]' 
+inches = r'\d[\"|\'\']' 
 
 preferred = r'(.*)?(Preferred|preferred)\s?(.*)?'
 height_word = r'Height|height'
@@ -59,14 +60,15 @@ build = r'(Build|build)\s?(.*)?'
 build_weight = r'\d{3}'
 build_height = r'\d\.\d'
 
-smoker = r'(.*)?[sS][Mm][oO][Kk]\s?(.*)?' 
+smoker = r'(.*)?[sS][Mm][oO][Kk]([eE][rR])?\s?(.*)?' 
 tobacco = r'(.*)?[Tt][oO][bB][aA][cC][cC][oO]\s?(.*)?'
-no = r'[nN][oO]'
+no = r'\b[nN][oO]\b'
+never = r'\b[nN][eE][vV][eE][rR]\b'
 
 med = r'(.*)?\b[mM][eE][dD][iI][cC][aA][tT][iI][oO][nN]\s?(.*)?'
 
 family = r'(.*)?(\b[Ff]amily)\s?(.*)?'
-family_member = r'(.*)?(\b[Mm]om)|(\b[Ff]ather)|(\b[Dd]ad)|(\b[Ss]ister)|(\b[Bb]rother)|(\b[Hh]usband)|(\b[Ww]ife)|(\b[Pp]arental)|(\b[Mm]aternal)|(\b[Gg]randfather)|(\b[Gg]randmother)\s?(.*)?'
+family_member = r'(.*)?(\b[Mm]om)\s?(.*)?|(.*)?(\b[Mm]other)\s?(.*)?|(\b[Ff]ather)\s?(.*)?|(\b[Dd]ad)\s?(.*)?|(\b[Ss]ister)\s?(.*)?|(\b[Bb]rother)\s?(.*)?|(\b[Hh]usband)\s?(.*)?|(\b[Ww]ife)\s?(.*)?|(\b[Pp]aternal)\s?(.*)?|(\b[Mm]aternal)\s?(.*)?|(\b[Gg]randfather)\s?(.*)?|(\b[Gg]randmother)\s?(.*)?|(\b[Ff]amily)\s?(.*)?'
 
 lives = r'(.*)?(\b[Ll]ives)\s?(.*)?'
 prop = r'(.*)?(\b[Pp]roperty)\s?(.*)?'
@@ -74,12 +76,21 @@ prop = r'(.*)?(\b[Pp]roperty)\s?(.*)?'
 def genderRegex(line):
 	ans=""
 	#for line in st:
+	male_with_age = r'\b[Mm]/\s?(age)?\s?'
+	female_with_age = r'\b[Ff]/\s?(age)?\s?'
 	y = re.search(gender, line, re.I | re.U)
 	if(y):
-		if(y.group(0)=='F/' or y.group(0)=='f/'):
+		y_male_age = re.search(male_with_age, y.group(0), re.I | re.U)
+		y_female_age = re.search(female_with_age, y.group(0), re.I | re.U)
+	
+		if(y.group(0)=='F/' or y.group(0)=='f/' or y.group(0)=='f/age'):
 			ans='Female'
-		elif(y.group(0)=='M/' or y.group(0)=='m/'):
+		elif(y.group(0)=='M/' or y.group(0)=='m/' or y.group(0)=='m/age'):
 			ans='Male'
+		elif(y_male_age):
+			ans='Male'
+		elif(y_female_age):
+			ans='Female'	
 		else:
 			#print (y.group(0)+"\n")
 			ans=(y.group(0))
@@ -254,11 +265,15 @@ def habitRegex(line):
 	if(sm): 
 		if(re.search(no, sm.group(0), re.I | re.U)):
 			ans="Non-Tobacco"
+		elif(re.search(never, sm.group(0), re.I | re.U)):
+			ans="Non-Tobacco"
 		else:
-			ans="TObacco"
+			ans="Tobacco"
 	elif(tob):
 		#print(tob.group(0))
 		if(re.search(no, tob.group(0), re.I | re.U)):
+			ans="Non-Tobacco"
+		elif(re.search(never, tob.group(0), re.I | re.U)):
 			ans="Non-Tobacco"
 		else:
 			ans="Tobacco"
@@ -272,6 +287,7 @@ def faceamountRegex(line):
 	term_reg = re.search(termamount, line, re.I | re.U)
 	seek_reg = re.search(seeking, line, re.I | re.U)
 	coverage_reg = re.search(cover, line, re.I | re.U)
+	ul_reg = re.search(ul, line, re.I | re.U)
 	#With faceAmount
 	if(w):
 		k = re.search(k_conv, w.group(0), re.I | re.U)
@@ -281,7 +297,7 @@ def faceamountRegex(line):
 		else:
 			ans=(w.group(0))
 
-		#With term Amount
+	#With term Amount
 	elif(term_reg):
 		amd = re.search(amount_with_dollar, term_reg.group(0), re.I | re.U)
 		amwd = re.search(amount_without_dollar, term_reg.group(0), re.I | re.U)			#Find 2nd regex in the same line of 1st regex 
@@ -377,6 +393,40 @@ def faceamountRegex(line):
 					ans='Face Amount: $'+((nn.group(0))+',000,000')
 				else:
 					ans='Face Amount: $'+amwd.group(0)
+		
+	#with ul
+	elif(ul_reg):
+		amd = re.search(amount_with_dollar, ul_reg.group(0), re.I | re.U)
+		amwd = re.search(amount_without_dollar, ul_reg.group(0), re.I | re.U)			#Find 2nd regex in the same line of 1st regex 
+		z = 0
+		if(amd):
+			k = re.search(k_conv, amd.group(0), re.I | re.U)
+			m = re.search(m_conv, amd.group(0), re.I | re.U)
+			if(k):
+				nn = re.search(num_conv, amd.group(0), re.I | re.U)
+				ans='Face Amount: '+((nn.group(0))+',000')
+			elif(m):
+				nn = re.search(num_conv, amd.group(0), re.I | re.U)
+				ans='Face Amount: '+((nn.group(0))+',000,000')
+			else:
+				ans='Face Amount: '+amd.group(0)
+		elif(amwd):
+			term_year_reg = re.search(term_year, amwd.group(0), re.I | re.U)
+			if(term_year_reg):
+				ans='Term Year: '+(amwd.group(0))
+			else:
+				#ans='Face Amount: $'+(amwd.group(0))
+				k = re.search(k_conv, amwd.group(0), re.I | re.U)
+				m = re.search(m_conv, amwd.group(0), re.I | re.U)
+				if(k):
+					nn = re.search(num_conv, amwd.group(0), re.I | re.U)
+					ans='Face Amount: $'+((nn.group(0))+',000')
+				elif(m):
+					nn = re.search(num_conv, amwd.group(0), re.I | re.U)
+					ans='Face Amount: $'+((nn.group(0))+',000,000')
+				else:
+					ans='Face Amount: $'+amwd.group(0)
+
 	else:
 		ans=""
 	return ans.strip()
