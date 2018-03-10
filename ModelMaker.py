@@ -11,7 +11,7 @@ import logging
 logger = logging.getLogger('QQ')
 logger.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-fileHandler = logging.FileHandler('logs/QQ-logs.log')
+fileHandler = logging.FileHandler(config.log)
 fileHandler.setFormatter(formatter)
 logger.addHandler(fileHandler)
 consoleHandler = logging.StreamHandler()

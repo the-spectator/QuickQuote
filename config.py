@@ -27,7 +27,7 @@ email_flags = ['UNSEEN']
 append_box = 'Test'
 
 # Logs
-log_file = 'Log/logfile.log'
+log = 'logs/QQ-logs.log'
 
 # raw_data_type
 raw_data_type = '1k_'
