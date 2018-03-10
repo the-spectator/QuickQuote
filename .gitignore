@@ -21,3 +21,6 @@ QuickUMLS/requirements.txt
 QuickUMLS/server.py
 QuickUMLS/setup_simstring.sh
 QuickUMLS/toolbox.py
+QuickUMLS/tutorial-env/
+QuickUMLS/simstring/
+logs/
