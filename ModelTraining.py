@@ -108,7 +108,9 @@ def model_making_main(file):
 	logger.info(">> Start - Model making")
 
 	df = pd.read_csv(config.preprocessed_csv, encoding='UTF-8')
-	df['ColumnA'] = df[df.columns[2:14]].apply(lambda x: ','.join(x.dropna()), axis=1)
+	# If getting an error remove .astype(str)
+	select_columns = ['recepientemail','Gender','Age(years)','Product Type','Weight','Height','Habit','Face Amount','Medication','Property','Medical Data','Family']
+	df['ColumnA'] = df[select_columns].apply(lambda x: ','.join(x.dropna().astype(str)), axis=1)
 
 	logging.info("Remove puncutation, tokenize")
 	df['Lemmitize'] = df['ColumnA'].apply(rem_punt).apply(tokenize)

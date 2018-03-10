@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 
-
 import pandas as pd
 import re
 import config
 from datetime import datetime
-# try:
-#	from search_term import give_med_terms
-#except:
-#	from QuickUMLS.search_term import give_med_terms
+try:
+	from search_term import give_med_terms
+except:
+	from QuickUMLS.search_term import give_med_terms
 
 number = r'\d{2,3}'
 
@@ -469,7 +468,8 @@ def familyRegex(line):
 
 
 def medicalTerms(doc):
-	return give_med_terms(doc)
+	return set(['med terms','cancer','tb'])
+	# return give_med_terms(doc)
 
 def regexmain(file):
 	df = pd.read_csv(file, encoding='UTF-8')
@@ -487,7 +487,7 @@ def regexmain(file):
 	of['Face Amount'] = of['Contents'].apply(faceamountRegex)
 	of['Medication'] = of['Contents'].apply(medicationRegex)
 	of['Property'] = of['Contents'].apply(propertyRegex)
-	# of['Medical Data'] = of['Contents'].apply(medicalTerms)
+	of['Medical Data'] = of['Contents'].apply(medicalTerms)
 	of['Family'] = of['Contents'].apply(familyRegex)
 	# df = df.drop(columns=['Contents'])
 	print(of)
