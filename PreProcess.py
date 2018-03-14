@@ -26,6 +26,8 @@ def changeWt(ans):
 	ans = str(ans)
 	val = re.sub("#", 'lb', ans)
 	val = re.sub("lbs", 'lb', val)
+	val = re.sub("Pounds", 'lb', val)
+	val = re.sub("pounds", 'lb', val)
 	val = str(re.sub(" ", '', val))
 	if(re.search('KG|Kg|kg', val, re.I | re.U)):
 		x = re.findall(r'\d+', ans)
@@ -42,6 +44,7 @@ def changeHeight(ans):
 		return (val)
 	else:
 		val = re.sub("Inches", '', val)	
+		val = re.sub("Inch", '', val)	
 		val = val + '0'
 		return (val)
 
