@@ -1,7 +1,18 @@
 import unittest
 from ModularRegex import * 
 from PreProcess import * 
+import logging
 
+# Log configuration and initialization
+logger = logging.getLogger('QQ')
+logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+fileHandler = logging.FileHandler(config.log)
+fileHandler.setFormatter(formatter)
+logger.addHandler(fileHandler)
+consoleHandler = logging.StreamHandler()
+consoleHandler.setFormatter(formatter)
+logger.addHandler(consoleHandler)
 
 class TestGeneral(unittest.TestCase):
 	def assertFeaturs(data, gender, age, height, weight, product, faceAmount, habit, medication, familyHistory):	
@@ -28,7 +39,9 @@ class TestGeneral(unittest.TestCase):
 			1. Metoprolol (Blood pressure) - diagnosed 2014 - Takes 25 mg daily 
 			2. Levothyroxine (Thyroid) - diagnosed 2016 - Takes 25 mg 		
 		'''
-			
+		
+		logger.info(data)
+                
                 self.assertEqual(genderRegex(data), "female")
                 self.assertEqual(ageRegex(data), 18)
                 self.assertEqual(heightRegex(data), "")
@@ -58,6 +71,8 @@ class TestGeneral(unittest.TestCase):
 			3. Digoxin (Heart) - Diagnosed 2000 - Takes .125 mg 
 		'''
 		
+		logger.info(data)
+                
                 self.assertEqual(genderRegex(data), "male")
                 self.assertEqual(ageRegex(data), 18)
                 self.assertEqual(heightRegex(data), "")
@@ -89,6 +104,8 @@ class TestGeneral(unittest.TestCase):
 			He had his gall bladder removed in 20XX.  There were no 
 		'''
 		
+                logger.info(data)
+                
                 self.assertEqual(genderRegex(data), "male")
                 self.assertEqual(ageRegex(data), 18)
                 #self.assertEqual(heightRegex(data), "5' 6'") 
@@ -124,6 +141,8 @@ class TestGeneral(unittest.TestCase):
 				Most recent BCC was 1.5cm x 3.9 cm at time of procedure, client was also recommended for MOHS for treatment on Rt side of nose.NoneNoneNoneNoneNoneNoneNoneNoneNoneNoneNone
 		'''
 		
+                logger.info(data)
+                
                 self.assertEqual(genderRegex(data), "female")
                 self.assertEqual(ageRegex(data), 52)
                 self.assertEqual(heightRegex(data), "") 
@@ -152,13 +171,15 @@ class TestGeneral(unittest.TestCase):
 			Would you offer?
 		'''
 		
+		logger.info(data)
+		
                 self.assertEqual(genderRegex(data), "female")
                 self.assertEqual(ageRegex(data), 22)
                 self.assertEqual(heightRegex(data), "") 
                 self.assertEqual(weightRegex(data), "")
 		self.assertEqual(productRegex(data), "Product Type: Term")  
 		self.assertEqual(faceamountRegex(data), "Face Amount: 50,000,000")
-		#self.assertEqual(habitRegex(data), "Non-Tobacco")
+		self.assertEqual(habitRegex(data), "Non-Tobacco")
 		self.assertEqual(medicationRegex(data), "")
 		self.assertEqual(familyRegex(data), "")
 
@@ -183,6 +204,8 @@ class TestGeneral(unittest.TestCase):
 			Minimal impairment vision blurred in left eye
 		'''
 		
+                logger.info(data)
+                
                 self.assertEqual(genderRegex(data), "female")
                 #self.assertEqual(ageRegex(data), 20)
                 #self.assertEqual(heightRegex(data), "5' 3'") 
@@ -204,11 +227,13 @@ class TestGeneral(unittest.TestCase):
 			Just had Endoscopy and Colonoscopy all clean 
 		'''
 		
+                logger.info(data)
+                
                 self.assertEqual(genderRegex(data), "male")
                 #self.assertEqual(ageRegex(data), 22)
                 #self.assertEqual(heightRegex(data), "") 
                 self.assertEqual(weightRegex(data), "")
-		#self.assertEqual(productRegex(data), "Product Type: Term")  
+		self.assertEqual(productRegex(data), "Product Type: Term")  
 		#self.assertEqual(faceamountRegex(data), "Face Amount: 2mm")
 		self.assertEqual(habitRegex(data), "")
 		self.assertEqual(medicationRegex(data), "")

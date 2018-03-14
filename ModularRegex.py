@@ -4,10 +4,15 @@ import pandas as pd
 import re
 import config
 from datetime import datetime
+import logging
+'''
 try:
 	from search_term import give_med_terms
 except:
 	from QuickUMLS.search_term import give_med_terms
+'''
+
+logger = logging.getLogger('QQ')
 
 number = r'\d{2,3}'
 
@@ -77,7 +82,7 @@ prop = r'(.*)?(\b[Pp]roperty)\s?(.*)?'
 
 #age_slash =""
 
-def genderRegex(line):
+def genderRegex(line):	
 	ans=""
 	#for line in st:
 	male_with_age = r'\b[Mm]/\s?(age)?\s?\d{2,3}'
@@ -116,7 +121,8 @@ def genderRegex(line):
 		ans=(y.group(0))
 	else:
 		ans=""
-
+	
+	logger.debug("Gender= " + ans.strip().lower())
 	return ans.strip().lower()
 
 def yearRegex(line):
@@ -141,6 +147,8 @@ def yearRegex(line):
 		ans=x1.group(0)
 	else:
 		ans=""
+		
+	logger.debug("Year= " + str(ans))	
 	return ans
 
 def productRegex(line):
@@ -159,7 +167,8 @@ def productRegex(line):
 		ans=(final_str)
 	else:
 		ans=""
-		
+	
+	logger.debug("Product= " + ans.strip())
 	return ans.strip()
 
 def weightRegex(line):
@@ -184,7 +193,8 @@ def weightRegex(line):
 				ans=(am.group(0))
 		else:
 			ans=""
-		
+
+	logger.debug("Weight= " + ans.strip())	
 	return ans.strip()
 
 def heightRegex(line):
@@ -214,6 +224,8 @@ def heightRegex(line):
 				ans=am
 		else:
 			ans=""
+
+	logger.debug("Height= " + ans.strip())
 	return ans.strip()
 
 def ageRegex(line):
@@ -278,6 +290,7 @@ def ageRegex(line):
 	#if(age_slash!=""):
 	#	ans='30'
 	
+	logger.debug("Age= " + str(ans))
 	return ans
 
 def habitRegex(line):
@@ -301,6 +314,8 @@ def habitRegex(line):
 			ans="Tobacco"
 	else:
 		ans=""
+		
+	logger.debug("Habit= " + ans.strip())	
 	return ans.strip()
 	
 def faceamountRegex(line):
@@ -451,6 +466,8 @@ def faceamountRegex(line):
 
 	else:
 		ans=""
+	
+	logger.debug("Face Amount= " + ans.strip())
 	return ans.strip()
 	
 def medicationRegex(line):
@@ -463,6 +480,8 @@ def medicationRegex(line):
 			ans="No Medication"
 	else:
 		ans = " "
+	
+	logger.debug("Medication= " + ans.strip())
 	return ans.strip()
 
 def propertyRegex(line):
@@ -476,6 +495,8 @@ def propertyRegex(line):
 			ans=lives_reg.groups()+prop_reg.groups()
 	elif(prop_reg):
 		ans=prop_reg.groups()
+	
+	logger.debug("Property= " + str(ans))
 	return ans
 
 def familyRegex(line):
@@ -489,34 +510,68 @@ def familyRegex(line):
 		ans=family_member_reg.groups()
 	else:															#Write else outsite condition (to stop rewriting of above cell)
 		ans=""
+	
+	logger.debug("Family= " + str(ans))
 	return ans
 
 
 def medicalTerms(doc):
-	return set(['med terms','cancer','tb'])
-	# return give_med_terms(doc)
+	ans = set(['med terms','cancer','tb'])
+	# and = give_med_terms(doc)
+	
+	logger.debug("Medical Terms= " + ans)
+	# return ans
 
 def regexmain(file):
+	logger.info(">> Start - Feature Extraction - RegEx")
+	
 	df = pd.read_csv(file, encoding='UTF-8')
 	of = pd.DataFrame()
+	
 	of['Contents'] = df['Contents']
 	of['Offer_noise_free'] = df['Offer_noise_free']
 	of['recepientemail'] = df['recepientemail']
+	
+	logger.info("Feature Extraction - Gender")
 	of['Gender'] = of['Contents'].apply(genderRegex)
+	
+	logger.info("Feature Extraction - DOB")
 	of['Year_of_Birth'] = of['Contents'].apply(yearRegex)
+	
+	logger.info("Feature Extraction - Age")
 	of['Age(years)'] = of['Contents'].apply(ageRegex)
+	
+	logger.info("Feature Extraction - Product Type")
 	of['Product Type'] = of['Contents'].apply(productRegex)
+	
+	logger.info("Feature Extraction - Weight")
 	of['Weight'] = of['Contents'].apply(weightRegex)
+	
+	logger.info("Feature Extraction - Height")
 	of['Height'] = of['Contents'].apply(heightRegex)
+	
+	logger.info("Feature Extraction - Habit")
 	of['Habit'] = of['Contents'].apply(habitRegex)
+	
+	logger.info("Feature Extraction - Face Amount")
 	of['Face Amount'] = of['Contents'].apply(faceamountRegex)
+	
+	logger.info("Feature Extraction - Medication")
 	of['Medication'] = of['Contents'].apply(medicationRegex)
+	
+	logger.info("Feature Extraction - Property")
 	of['Property'] = of['Contents'].apply(propertyRegex)
-	of['Medical Data'] = of['Contents'].apply(medicalTerms)
+	
+	logger.info("Feature Extraction - Medical Terms - UMLS")
+	#of['Medical Data'] = of['Contents'].apply(medicalTerms)
+	
+	logger.info("Feature Extraction - Family History")
 	of['Family'] = of['Contents'].apply(familyRegex)
-	# df = df.drop(columns=['Contents'])
-	print(of)
+	
+	# df = df.drop(columns=['Contents'])	
 	of.to_csv(config.regex_processed_csv,index =False, encoding='utf-8')
+	
+	logger.info("<< End - Feature Extraction - RegEx")
 	
 #regexmain(config.raw_data_csv)	
 
