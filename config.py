@@ -18,6 +18,7 @@ eraw_data_csv = 'Data/eraw_data.csv'
 enlp_processed_csv = 'Data/NLPProcessed.csv'
 template = 'Data/email.template'
 predicted_csv = 'Data/predicted.csv'
+filter_json = 'Data/umls_filter.json'
 
 # email
 email_from = 'Trial waliid <trial_wali_id@outlook.com>'
