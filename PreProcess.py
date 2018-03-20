@@ -62,13 +62,28 @@ def emailfirst(doc):
 	else:
 		doc = ""
 		return doc
+def human_format(num):
+    num = float('{:.3g}'.format(num))
+    magnitude = 0
+    while abs(num) >= 1000:
+        magnitude += 1
+        num /= 1000.0
+    return '{}{}'.format('{:f}'.format(num).rstrip('0').rstrip('.'), ['', 'K', 'M', 'B', 'T'][magnitude])
 
+def standardize_famnt(doc):
+	if(doc.isdigit()):
+		number = int(doc)
+		num = human_format(number)
+		return(num)
+	else:
+		return(doc)
 
 def preprocess_main(file):
+
 	logger.info(">> Start - Preprocessing. Standardize Face amount, Weight... etc")
 	logger.debug("Opening -" + config.regex_processed_csv)
 	df = pd.read_csv(config.regex_processed_csv, encoding='UTF-8')
-	# df = df.iloc[1:]
+	df = df.iloc[1:]
 	df = df.drop(columns=['Year_of_Birth'])
 	of = pd.read_csv(file, encoding='UTF-8')
 	of['recepientemail'] = of['recepientemail'].apply(emailfirst)
@@ -85,10 +100,12 @@ def preprocess_main(file):
 	
 	logger.info("Standardize Product Type")
 	df['Product Type'] = df['Product Type'].apply(changePT)
+	df['Face Amount'] = df['Face Amount'].apply(standardize_famnt)
+	print(df['Face Amount'])
 
 	
 	#print(df)
 	df.to_csv(config.preprocessed_csv, index=False, encoding="utf-8")
 	logger.info("<< End - Preprocess")
 
-# preprocess_main(config.raw_data_csv)
+preprocess_main(config.raw_data_csv)
