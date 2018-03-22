@@ -103,6 +103,16 @@ def model_making(model_name, vect, model, X_train, y_train, X_test, y_test):
 def conversion(doc):
 	return(str(doc))
 
+def model_with_SVD(vectorizer,X_train,X_test,y_train,y_test):
+	svd = TruncatedSVD(n_components = 10,n_iter=7, random_state=42)
+	lsa = make_pipeline(vectorizer,svd, Normalizer(copy=False))
+	clf = ExtraTreesClassifier(n_estimators=200,n_jobs=-1,max_depth=36)
+	pipe = make_pipeline(lsa, clf)
+	pipe.fit(X_train,y_train)
+	y_pred = clf.predict(X_test)
+	results = (accuracy_score(y_test, y_pred) * 100)
+	print("Results: ",results)
+
 
 def model_making_main(file):
 	logger.info(">> Start - Model making")
@@ -141,11 +151,12 @@ def model_making_main(file):
 	model4 = SVC(kernel='rbf', C=1, gamma=10)
 	model5 = LogisticRegression()
 	model7 = SGDClassifier(alpha=.0001)
-	#model_making("XGBOOST",vect, model1, X_train, y_train, X_test, y_test)
+	model_making("XGBOOST",vect, model1, X_train, y_train, X_test, y_test)
 	model_making("Random Forest", vect, model3,X_train, y_train, X_test, y_test)
 	model_making("SVM", vect, model4, X_train, y_train, X_test, y_test)
 	model_making("Logistic Regression", vect, model5,X_train, y_train, X_test, y_test)
 	model_making("SGDClassifier", vect, model7,X_train, y_train, X_test, y_test)
+	# model_with_SVD(vect,X_train,X_test,y_train,y_test)
 	logger.info("<< End - Model making")
 
 
