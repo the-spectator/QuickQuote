@@ -86,7 +86,7 @@ def model_making(model_name, vect, model, X_train, y_train, X_test, y_test):
 	t2 = time.time()
 	training_time = (t2 - t1)
 
-	model_saving(model_name, clf)
+	#model_saving(model_name, clf)
 	t1 = time.time()
 
 	pd = clf.predict(X_test)
@@ -96,6 +96,7 @@ def model_making(model_name, vect, model, X_train, y_train, X_test, y_test):
 	y_pred = clf.predict(X_test)
 
 	results = (accuracy_score(y_test, y_pred) * 100)
+	print(model_name, " ",results)
 	logger.info("{:20} {:^20.3f} {:^20.3f} {:20.3f}s \n ".format(model_name, results, training_time, prediction_time))
 	logger.info(f"{confusion_matrix(y_test, y_pred)}")
 
@@ -104,14 +105,21 @@ def conversion(doc):
 	return(str(doc))
 
 def model_with_SVD(vectorizer,X_train,X_test,y_train,y_test):
+	logger.info("Training with LSA started")
 	svd = TruncatedSVD(n_components = 10,n_iter=7, random_state=42)
 	lsa = make_pipeline(vectorizer,svd, Normalizer(copy=False))
-	clf = ExtraTreesClassifier(n_estimators=200,n_jobs=-1,max_depth=36)
+	clf = ExtraTreesClassifier(n_estimators=30,n_jobs=-1,max_depth=6)
+	#clf = SVC(kernel='rbf', C=1, gamma=10)
 	pipe = make_pipeline(lsa, clf)
 	pipe.fit(X_train,y_train)
-	y_pred = clf.predict(X_test)
+
+	testp = make_pipeline(vectorizer,svd,Normalizer(copy=False))
+	X_t = testp.transform(X_test)
+
+	y_pred = clf.predict(X_t)
 	results = (accuracy_score(y_test, y_pred) * 100)
-	print("Results: ",results)
+	logger.info("LSA : "+ str(results))
+	print("LSA: ",str(results))
 
 
 def model_making_main(file):
@@ -120,15 +128,16 @@ def model_making_main(file):
 	df = pd.read_csv(config.preprocessed_csv, encoding='UTF-8')
 	# If getting an error remove .astype(str)
 	select_columns = ['recepientemail','Gender','Age(years)','Product Type','Weight','Height','Habit','Face Amount','Medication','Property','Medical Data','Family']
+	select_columns = ['recepientemail','Gender','Age(years)','Product Type','Weight','Height','Habit','Face Amount','Medication','Property','Family']
 	df['ColumnA'] = df[select_columns].apply(lambda x: ','.join(x.dropna().astype(str)), axis=1)
 
 	logging.info("Remove puncutation, tokenize")
 	df['Lemmitize'] = df['ColumnA'].apply(rem_punt).apply(tokenize)
 
 	df['Lemmitize'] = df['Lemmitize'].apply(conversion)
-	df.to_csv(config.nlp_processed_csv, index=False, encoding="utf-8")
+	df.to_pickle(config.nlp_processed)
 
-	df = pd.read_csv(config.nlp_processed_csv)
+	df = pd.read_pickle(config.nlp_processed)
 
 	X = df['Lemmitize']
 	of = pd.read_csv(file, encoding='UTF-8')
@@ -136,28 +145,19 @@ def model_making_main(file):
 
 	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=4)
 	vect = TfidfVectorizer(max_df=0.5, max_features=10000,min_df=1, use_idf=True, ngram_range=(1, 2), lowercase=True)
-	represent = TfidfVectorizer(max_df=0.5, max_features=10000,min_df=1, use_idf=True, ngram_range=(1, 1), lowercase=True)
-	matrix = represent.fit_transform(X.values)
-	# visualize(represent,matrix,X,y)
-	# print(matrix)
-
-	# for i, feature in enumerate(vect.get_feature_names()):
-	#    print(i, feature)
-
-	#va = raw_input()
 
 	#model1 = XGBClassifier(nthread=4,n_estimators=1000)
 	model3 = RandomForestClassifier(n_estimators=60, n_jobs=3, max_features="auto", min_samples_leaf=50)
 	model4 = SVC(kernel='rbf', C=1, gamma=10)
 	model5 = LogisticRegression()
 	model7 = SGDClassifier(alpha=.0001)
-	model_making("XGBOOST",vect, model1, X_train, y_train, X_test, y_test)
+	#model_making("XGBOOST",vect, model1, X_train, y_train, X_test, y_test)
 	model_making("Random Forest", vect, model3,X_train, y_train, X_test, y_test)
 	model_making("SVM", vect, model4, X_train, y_train, X_test, y_test)
 	model_making("Logistic Regression", vect, model5,X_train, y_train, X_test, y_test)
-	model_making("SGDClassifier", vect, model7,X_train, y_train, X_test, y_test)
-	# model_with_SVD(vect,X_train,X_test,y_train,y_test)
-	logger.info("<< End - Model making")
+	model_making("SGDClassifier", vect, model7,X_train, y_train, X_test, y_test) 
+	model_with_SVD(vect,X_train,X_test,y_train,y_test)
+	logger.info("<< End - Model making") 
 
 
-# model_making_main(config.raw_data_csv)
+model_making_main(config.raw_data_csv)

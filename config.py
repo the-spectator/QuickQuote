@@ -19,6 +19,7 @@ enlp_processed_csv = 'Data/NLPProcessed.csv'
 template = 'Data/email.template'
 predicted_csv = 'Data/predicted.csv'
 filter_json = 'Data/umls_filter.json'
+nlp_processed = 'Data/nlpprocessed.pkl'
 
 # email
 email_from = 'Trial waliid <trial_wali_id@outlook.com>'
