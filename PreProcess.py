@@ -83,7 +83,6 @@ def preprocess_main(file):
 	logger.info(">> Start - Preprocessing. Standardize Face amount, Weight... etc")
 	logger.debug("Opening -" + config.regex_processed_csv)
 	df = pd.read_csv(config.regex_processed_csv, encoding='UTF-8')
-	df = df.iloc[1:]
 	df = df.drop(columns=['Year_of_Birth'])
 	of = pd.read_csv(file, encoding='UTF-8')
 	of['recepientemail'] = of['recepientemail'].apply(emailfirst)
@@ -101,7 +100,7 @@ def preprocess_main(file):
 	logger.info("Standardize Product Type")
 	df['Product Type'] = df['Product Type'].apply(changePT)
 	df['Face Amount'] = df['Face Amount'].apply(standardize_famnt)
-	print(df['Face Amount'])
+	# print(df['Face Amount'])
 
 	
 	#print(df)

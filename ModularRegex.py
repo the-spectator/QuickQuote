@@ -517,10 +517,9 @@ def familyRegex(line):
 
 def medicalTerms(doc):
 	ans = set(['med terms','cancer','tb'])
-	# and = give_med_terms(doc)
-	
-	logger.debug("Medical Terms= " + ans)
-	# return ans
+	# ans = give_med_terms(doc)
+	logger.debug(f"Medical Terms={ans}")
+	return ans
 
 def regexmain(file):
 	logger.info(">> Start - Feature Extraction - RegEx")
@@ -563,7 +562,7 @@ def regexmain(file):
 	of['Property'] = of['Contents'].apply(propertyRegex)
 	
 	logger.info("Feature Extraction - Medical Terms - UMLS")
-	#of['Medical Data'] = of['Contents'].apply(medicalTerms)
+	of['Medical Data'] = of['Contents'].apply(medicalTerms)
 	
 	logger.info("Feature Extraction - Family History")
 	of['Family'] = of['Contents'].apply(familyRegex)
