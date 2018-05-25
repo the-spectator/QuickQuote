@@ -1,9 +1,10 @@
 Hello,
-After analysing your details we are providing you with {product_}.
+After analyzing your details we are providing you with {product_}.
 
 Thank you
 
 PGS
+
 
 ___OrignalEmail___
 
@@ -11,3 +12,7 @@ from: {from_}
 subject: {subject_}
 sendon: {sendon_}
 content: {content_}
+
+
+-----Message Disclaimer-----
+{disclaimer_}

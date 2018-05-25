@@ -44,7 +44,6 @@ def read_template():
 
 # Marking the predicted emails
 
-
 def mark_predicted(id, message_id):
 	entry = collections.OrderedDict({'ID': id, 'MessageID': message_id})
 	df = pd.DataFrame([entry])
@@ -62,14 +61,37 @@ def append_mail(doc, server, folder, new_flags):
 	email_from = give_email_address([config.email_from])
 	email_subject = f"Re:{doc['Subject']}"
 	result = doc['Offer_noise_free']
+	print(result)
+	result = result.split("'")[1::2][0]
 	email_template = read_template()
+	disclaimer = get_disclaimer(result)
 	email_content = email_template.format(product_=result, from_=doc['Senderemail'], 
-										  subject_=doc['Subject'], sendon_=doc['SentOn'], content_=doc['Contents'])
+										  subject_=doc['Subject'], sendon_=doc['SentOn'],
+										  content_=doc['Contents'], disclaimer_= disclaimer)
 	mail = create_email(email_to, email_subject, email_from, email_content)
 	server.append(folder, mail, flags=(new_flags), msg_time=None)
 	mark_predicted(doc['ID'], doc['MessageID'])
 	pass
 
+def get_disclaimer(result):
+	condition1 = 'Applicable only with medical certificate provided.'
+	condition2 = 'Periodic medical examination is advised.'
+	condition4 = 'These quotes are not final and are purely based on information provided by customer.'
+	condition3 = 'Further financial analysis is needed.'
+	disclaimer = ''
+	if result == 'Preferred Non-Tobacco':
+		disclaimer+='1. ' + condition1
+		disclaimer+='\n2. ' + condition3
+	elif result == 'Preferred':
+		disclaimer+='\n1. ' + condition1
+		disclaimer+='\n2. ' + condition2
+		disclaimer+='\n3. ' + condition4
+	else:
+		disclaimer+='\n1. ' + condition1
+		disclaimer+='\n2. ' + condition2
+		disclaimer+='\n3. ' + condition3
+		disclaimer+='\n4. ' + condition4
+	return disclaimer
 
 def mail_append_main():
 	logger.info('>> Start - Mail Append')
