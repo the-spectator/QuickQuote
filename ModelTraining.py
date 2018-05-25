@@ -24,7 +24,7 @@ import pickle
 from sklearn.metrics import classification_report
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
-#from xgboost.sklearn import XGBClassifier
+from xgboost.sklearn import XGBClassifier
 import time
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
@@ -146,7 +146,7 @@ def model_making_main(file):
 
 	#va = raw_input()
 
-	#model1 = XGBClassifier(nthread=4,n_estimators=1000)
+	model1 = XGBClassifier(nthread=4,n_estimators=1000)
 	model3 = RandomForestClassifier(n_estimators=60, n_jobs=3, max_features="auto", min_samples_leaf=50)
 	model4 = SVC(kernel='rbf', C=1, gamma=10)
 	model5 = LogisticRegression()

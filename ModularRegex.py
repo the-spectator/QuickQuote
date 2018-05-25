@@ -5,12 +5,11 @@ import re
 import config
 from datetime import datetime
 import logging
-'''
+
 try:
 	from search_term import give_med_terms
 except:
 	from QuickUMLS.search_term import give_med_terms
-'''
 
 logger = logging.getLogger('QQ')
 
@@ -516,8 +515,8 @@ def familyRegex(line):
 
 
 def medicalTerms(doc):
-	ans = set(['med terms','cancer','tb'])
-	# ans = give_med_terms(doc)
+	# ans = set(['med terms','cancer','tb'])
+	ans = give_med_terms(doc)
 	logger.debug(f"Medical Terms={ans}")
 	return ans
 
